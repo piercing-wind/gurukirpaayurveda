@@ -34,9 +34,11 @@ jobs:
     - run: npx prisma db push
     - name: Build
       run: pnpm run build
-    
-   #  - name: Change directory
-   #    run: cd /home/ubuntu/actions-runner/_work/ai_flavoured/ai_flavoured
+    - name: Change directory
+      run: cd /home/ubuntu/gurukirpa/gurukirpaayurveda/gurukirpaayurveda
+    - run: pm2 restart 9   
+
+      
 
 
 
