@@ -9,7 +9,8 @@ export const publicRoute = [
    '/terms-and-conditions',
    '/refund-policy',
    '/shipping-policy',
-   '/about',   
+   '/about', 
+   '/api/auth'  
 ]
 
 
