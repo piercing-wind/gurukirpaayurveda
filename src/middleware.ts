@@ -9,34 +9,29 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthRoute);
-  const isPublicRoute = publicRoute.includes(nextUrl.pathname);
+  const isPublicRoute = publicRoute.includes(nextUrl.pathname) || nextUrl.pathname.startsWith('/shop');
   const isAuthRoute = authRoute.includes(nextUrl.pathname);
 
   //Do Not Change the order of the below id conditions. 
 
   if (isApiAuthRoute) {
-    return;
+    return null;
   }
 
   if (isAuthRoute) {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-    return;
+    return null;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
     return Response.redirect(new URL('/login', nextUrl));
   }
 
-  return;
+  return null;
 });
 
 export const config = {
-   matcher: [
-      // Skip Next.js internals and all static files, unless found in search params
-      '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-      // Always run for API routes
-      '/(api|trpc)(.*)',
-    ],
+   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
