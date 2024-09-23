@@ -184,19 +184,21 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                
              },
          };
+         if (typeof window !== "undefined") {
+            // Client-side-only code
+            const rzp = new (window as any).Razorpay(options);
+            rzp.open();
+            rzp.on('payment.failed', function (response : any) {
+               // Payment failed
+               toast.error(`Payment failed! Reason: ${response.error.description}`,{
+                  duration: 20000,
+                  closeButton: true,
+               });
+               console.log('Payment failed:', response);
+             })
+        
+         }
    
-         const rzp = new (window as any).Razorpay(options);
-         rzp.open();
-   
-         rzp.on('payment.failed', function (response : any) {
-            // Payment failed
-            toast.error(`Payment failed! Reason: ${response.error.description}`,{
-               duration: 20000,
-               closeButton: true,
-            });
-            console.log('Payment failed:', response);
-          })
-     
          } catch (error) {
             console.error(error);
             toast.error(`An error occurred: ${(error as Error).message}`,{
