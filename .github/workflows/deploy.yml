@@ -16,6 +16,7 @@ jobs:
     steps:
    #  - name : Truning Maintenance Mode on
    #    run: sudo touch /var/www/html/maintenance.flag
+   
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
