@@ -27,18 +27,18 @@ jobs:
     - name: Load .env varables
       run: |
         export $(grep -v '^#' .env | xargs)
-    - name: Log ENV_VARIABLE
-      run: echo "ENV_VARIABLE=${{secrets.ENV_VARIABLE}}"
     - run: npm install -g pnpm
     - run: pnpm install --frozen-lockfile
-    - run: pnpm run build 
+    - name: Prisma Database Deploy
+      run: npx prisma generate
+    - run: npx prisma db push
+    - name: Build
+      run: pnpm run build
     
    #  - name: Change directory
    #    run: cd /home/ubuntu/actions-runner/_work/ai_flavoured/ai_flavoured
 
-    - name: Prisma Migration Deploy
-      run: npx prisma generate
-    - run: npx prisma migrate deploy
+
 
    #  - name: Install PM2
    #    run: npm install pm2 -g
