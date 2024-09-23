@@ -27,6 +27,8 @@ jobs:
     - name: Load .env varables
       run: |
         export $(grep -v '^#' .env | xargs)
+    - name: Log ENV_VARIABLE
+      run: echo "ENV_VARIABLE=${{secrets.ENV_VARIABLE}}"
     - run: npm install -g pnpm
     - run: pnpm install --frozen-lockfile
     - run: pnpm run build 
