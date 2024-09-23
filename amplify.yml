@@ -12,6 +12,8 @@ frontend:
         - npm install -g pnpm
         - echo "$ENV_VARIABLE" > .env
         - export $(grep -v '^#' .env | xargs -d '\n')
+        - echo "Environment Variables:"
+        - echo "$ENV_VARIABLE"
         - pnpm install --frozen-lockfile
     build:
       commands:

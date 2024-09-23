@@ -32,4 +32,6 @@ export default {
   ],
 
   trustHost: true,
+  trustHostedDomain: true,
+  debugger : false,
 } satisfies NextAuthConfig;
