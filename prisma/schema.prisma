@@ -1,0 +1,125 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+enum UserRole {
+   ADMIN
+   USER 
+}
+
+model User {
+   id                String @id @default(uuid()) @map("_id") 
+   name              String
+   email             String @unique
+   emailVerified     DateTime?
+   image             String?
+   password          String?
+   role              UserRole @default(USER)
+   accounts          Account[] 
+   orders            Order[]
+   transactions      Transactions[]
+}
+
+model Account {
+   id                String  @id @default(uuid()) @map("_id") 
+   userId            String  
+   type              String
+   provider          String
+   providerAccountId String
+   refresh_token     String? 
+   access_token      String? 
+   expires_at        Int?
+   token_type        String?
+   scope             String?
+   id_token          String? 
+   session_state     String?
+ 
+   createdAt         DateTime @default(now())
+   updatedAt         DateTime @updatedAt
+ 
+   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+   @@unique([provider, providerAccountId])
+}
+
+model VerificationToken {
+   id                String @id @default(uuid()) @map("_id")
+   email             String
+   token             String @unique
+   expires           DateTime
+
+   @@unique([email, token])
+}   
+
+model ResetPasswordToken {
+   id                String @id @default(uuid()) @map("_id")
+   email             String
+   token             String @unique
+   expires           DateTime
+
+   @@unique([email, token])
+}   
+
+model Order {
+   order_id          String   @id @default(uuid()) @map("_id")
+   userId            String
+   order_status      String
+   total_price       Float
+   shipping_address  Json
+   payment_status    String
+   order_date        DateTime @default(now())
+   updatedAt         DateTime @updatedAt
+   payment_method    String
+   shipping_method   String
+   cart_items        Json
+
+   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+   shipping          Shipping[]
+   transactions      Transactions[]
+}
+
+model Shipping {
+   id                          String   @id @default(uuid()) @map("_id")
+   order_id                    String   @unique
+   carrier                     String
+   tracking_number_waybill     String
+   shipping_status             String
+   shipping_address            Json
+   delivery_charge             String
+   estimated_delivery          DateTime?
+   responseDelhivery           Json
+   updatedAt                   DateTime @updatedAt
+
+   order               Order    @relation(fields: [order_id], references: [order_id], onDelete: Cascade)
+}
+
+model Transactions {
+   id                   String   @id @default(uuid()) @map("_id")
+   order_id             String   
+   userId               String
+   razorpay_payment_id  String   @unique
+   razorpay_order_id    String
+   payment_status       String
+   payment_method       String
+   transaction_amount   Float
+   currency             String
+   transaction_date     DateTime @default(now())
+   razorpay_response    Json?
+   createdAt            DateTime @default(now())
+   updatedAt            DateTime @updatedAt
+
+   order                Order    @relation(fields: [order_id], references: [order_id], onDelete: Cascade)
+   user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

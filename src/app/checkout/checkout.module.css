@@ -1,0 +1,33 @@
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 6px; /* Add border-radius to scrollbar */
+  cursor: pointer;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: #FCE3AA;
+  border-radius: 6px; /* Add border-radius to track */
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #B88E2F;
+  border-radius: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #B88E2F;
+}
+
+/* .scrollbar::-webkit-scrollbar-button {
+  width: 8px;
+  height: 8px;
+  background: #B88E2F;
+}
+
+.scrollbar::-webkit-scrollbar-button:increment {
+  background: #B88E2F;
+}
+
+.scrollbar::-webkit-scrollbar-button:decrement {
+  background: #B88E2F;
+} */
