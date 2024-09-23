@@ -2,6 +2,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const InfoSection = () => {
   const ref = useRef(null);
@@ -22,6 +23,7 @@ export const InfoSection = () => {
           <p className="tracking-wide opacity-85">Ayurveda promotes natural healing, balances mind and body, boosts immunity, and supports long-term wellness through personalized remedies and lifestyle practices.</p>
           <p className="tracking-wide opacity-85">Experience the power of personalized Ayurvedic healing with our natural remedies, designed to balance your mind, body, and spirit for lasting wellness and vitality.</p>
         </div>
+        <Link href="/shop">
         <motion.button
           className="bg-gold text-white font-semibold py-2 px-10 bg-opacity-80 hover:bg-opacity-100 my-10"
           whileHover={{ scale: 1.05 }}
@@ -30,6 +32,7 @@ export const InfoSection = () => {
         >
           Explore More
         </motion.button>
+        </Link>
       </motion.div>
       
       <motion.div

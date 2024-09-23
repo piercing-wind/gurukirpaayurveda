@@ -51,7 +51,7 @@ const AboutPage = () => {
   return (
     <main className="w-full">
       <HeaderWithSessionProvider />
-      <section className="w-[70%] mx-auto flex flex-col items-center justify-start  my-16 tracking-wide px-24">
+      <section className="w-[95%] lg:w-[70%] mx-auto flex flex-col items-center justify-start  my-16 tracking-wide px-4 lg:px-24">
         <h1 className="text-3xl font-semibold text-gold mb-4">
           About Us – Gurukirpa Ayurveda
         </h1>

@@ -85,7 +85,7 @@ export const ProductItem = ({ product }: { product: Product }) => {
     <div className="w-full px-4 md:px-20 py-10">
       <div className="flex flex-col md:flex-row gap-10">
         <div className="flex-1">
-          <div className="relative h-[30rem] w-[30rem]">
+          <div className="relative h-[26rem] w-full md:h-[30rem] md:w-[30rem]">
             <Image
               src={product.image}
               alt={product.name}
