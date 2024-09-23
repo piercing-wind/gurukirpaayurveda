@@ -100,7 +100,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
             currency : order?.currency,
             name : "Gurukirpa Ayurveda",
             description : description,
-            image : "http://localhost:3000/logo.png", 
+            image : `https://${process.env.NEXT_PUBLIC_WEBSITE_URL}/logo.png"`, 
             order_id : order?.id,
             // redirect : true,
             callback_url : "https://eneqd3r9zrjok.x.pipedream.net/",

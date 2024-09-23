@@ -15,6 +15,7 @@ export const ProductItem = ({ product }: { product: Product }) => {
    const [quantity, setQuantity] = useState(product.quantity);
    const { cart, addToCart, updateCartItemQuantity } = useCart();
    const router = useRouter();
+   
 
 
    const billPrice = useMemo(() => {
@@ -77,7 +78,7 @@ export const ProductItem = ({ product }: { product: Product }) => {
    router.push('/checkout');
  }
 
- const shareUrl = `${window.location.origin}/shop/${product.id}`;
+ const shareUrl = `${process.env.NEXT_PUBLIC_WEBSITE_URL}/shop/${product.id}`;
  const shareText = `Check out this product: ${product.name}`;
 
   return (
