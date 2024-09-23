@@ -12,6 +12,7 @@ export const publicRoute = [
    '/about',   
 ]
 
+
 export const authRoute = [
    '/login',
    '/register',
