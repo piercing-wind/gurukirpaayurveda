@@ -41,7 +41,9 @@ export const SearchItem = ({searchProduct}:{searchProduct : (search : string)=>v
  useEffect(() => {
    const subscription = form.watch((value) => {
      if (value.search) {
-       window.scrollTo({ top: 0, behavior: 'smooth' });
+      if(typeof window !== 'undefined'){
+         window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
      }
    });
    return () => subscription.unsubscribe();
