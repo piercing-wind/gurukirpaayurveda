@@ -57,7 +57,6 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
    const amountToCharge = Math.floor(billTotal * 1000) / 10;
    const description = cart.map((item)=> item.name).join(', ');
    const [cod, setCodDelivery] = useState<boolean>(false);
-   console.log(cod);
    const defaultFormData = {
       phone: '',
       country: '',
@@ -140,42 +139,42 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                   });
                   return;
                }
-               startTransition(() => {
-                  successPayment(order.id, response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature, order.amount).then((response)=>{
+               // startTransition(() => {
+               //    successPayment(order.id, response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature, order.amount).then((response)=>{
                   
-                     if(response.status === 'captured'){
-                        createShipmentOrder(formData, cart, billTotal, 'Pre-paid', transportationCharge.toString(),response.orderId).then((response)=>{
+               //       if(response.status === 'captured'){
+               //          createShipmentOrder(formData, cart, billTotal, 'Pre-paid', transportationCharge.toString(),response.orderId).then((response)=>{
 
-                           if(response.success){
-                              toast.success(`Order Placed Successfully! Your order will be dispatched soon. Use this ${response.waybill} for track your order!`,{
-                                 duration: 30000,
-                                 closeButton: true,
-                              });
-                              clearCart();
-                              setActiveComponent('SuccessPayment');
-                           }else{
-                              toast.error('An error occurred while placing the order. Please try again later.',{
-                                 duration: 20000,
-                                 closeButton: true,
-                              });
-                           }
+               //             if(response.success){
+               //                toast.success(`Order Placed Successfully! Your order will be dispatched soon. Use this ${response.waybill} for track your order!`,{
+               //                   duration: 30000,
+               //                   closeButton: true,
+               //                });
+               //                clearCart();
+               //                setActiveComponent('SuccessPayment');
+               //             }else{
+               //                toast.error('An error occurred while placing the order. Please try again later.',{
+               //                   duration: 20000,
+               //                   closeButton: true,
+               //                });
+               //             }
                            
-                        }).catch((error)=>{
-                           toast.error(`An error occurred: ${(error as Error).message}`,{
-                              duration: 20000,
-                              closeButton: true,
-                           });
-                           console.log(error);
-                        });
+               //          }).catch((error)=>{
+               //             toast.error(`An error occurred: ${(error as Error).message}`,{
+               //                duration: 20000,
+               //                closeButton: true,
+               //             });
+               //             console.log(error);
+               //          });
                         
-                     }
-                  clearCart();
-                  setActiveComponent('SuccessPayment');
-                  }).catch((error) => {
-                     console.error(error);
-                     throw new Error(`${(error as Error).message} Error in creating order`);
-                   });
-               });
+               //       }
+               //    clearCart();
+               //    setActiveComponent('SuccessPayment');
+               //    }).catch((error) => {
+               //       console.error(error);
+               //       throw new Error(`${(error as Error).message} Error in creating order`);
+               //     });
+               // });
      
                toast.success(`Payment successful! Payment ID: ${response.razorpay_payment_id}`,{
                   duration: 20000,
@@ -212,30 +211,35 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
    }
 
    const cashOnDelivery = async () => {
-
-      createShipmentOrder(formData, cart, billTotal, 'COD', transportationCharge.toString()).then((response)=>{
-         if(response.success){
-            toast.success(`Order Placed Successfully! Your order will be dispatched soon. Use this ${response.waybill} for track your order!`,{
-               duration: 30000,
-               closeButton: true,
-            });
-            clearCart();
-            setActiveComponent('SuccessPayment');
-         }else{
-            toast.error('An error occurred while placing the order. Please try again later.',{
-               duration: 20000,
-               closeButton: true,
-            });
-         }
-         
-         setActiveComponent('SuccessPayment');
-      }).catch((error)=>{
-         toast.error(`An error occurred: ${(error as Error).message}`,{
-            duration: 20000,
-            closeButton: true,
-         });
-         console.log(error);
+      toast.success('Order Placed Successfully! Your order will be dispatched soon. Use this 123456789 for track your order!',{
+         duration: 30000,
+         closeButton: true,
       });
+
+
+      // createShipmentOrder(formData, cart, billTotal, 'COD', transportationCharge.toString()).then((response)=>{
+      //    if(response.success){
+      //       toast.success(`Order Placed Successfully! Your order will be dispatched soon. Use this ${response.waybill} for track your order!`,{
+      //          duration: 30000,
+      //          closeButton: true,
+      //       });
+      //       clearCart();
+      //       setActiveComponent('SuccessPayment');
+      //    }else{
+      //       toast.error('An error occurred while placing the order. Please try again later.',{
+      //          duration: 20000,
+      //          closeButton: true,
+      //       });
+      //    }
+         
+      //    setActiveComponent('SuccessPayment');
+      // }).catch((error)=>{
+      //    toast.error(`An error occurred: ${(error as Error).message}`,{
+      //       duration: 20000,
+      //       closeButton: true,
+      //    });
+      //    console.log(error);
+      // });
    }
 
    const onSubmit = async (data: z.infer<typeof AddressSchema>) => {

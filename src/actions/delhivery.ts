@@ -24,7 +24,7 @@ export const serviceAvailabilty = async (pin: string) => {
  };
 
  export const createShipment = async (formData: z.infer<typeof AddressSchema>, order_id: string, name: string, payment_mode: 'COD' | 'Pre-paid' | 'Pickup', cart : Product[], price: number) => {
-      const url = 'https://track.delhivery.com/api/cmu/create.json';
+      const url = `https://${process.env.DELHIVERY_API_URL}/api/cmu/create.json`;
       const apiKey = process.env.DELHIVERY_API;
       const productDesc = cart.map(item => item.name).join(' + ');
       if (!order_id) {
