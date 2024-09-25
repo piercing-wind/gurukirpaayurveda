@@ -1,6 +1,6 @@
 'use server'
 import * as z from 'zod';
-import { AddressSchema } from "@/schemas";
+import { AddressSchema, GST_IN } from "@/schemas";
 import { Product } from '@/types/type';
 export const serviceAvailabilty = async (pin: string) => {
    console.log(process.env.DELHIVERY_API);
@@ -23,15 +23,14 @@ export const serviceAvailabilty = async (pin: string) => {
    }
  };
 
- export const createShipment = async (formData: z.infer<typeof AddressSchema>, order_id: string, name: string, payment_mode: 'COD' | 'Pre-paid' | 'Pickup', cart : Product[], price: number) => {
+ export const createShipment = async (formData: z.infer<typeof AddressSchema>, order_id: string, name: string, payment_mode: 'COD' | 'Pre-paid' | 'Pickup', cart : Product[], price: number, formDataGST:any) => {
       const url = `https://${process.env.DELHIVERY_API_URL}/api/cmu/create.json`;
       const apiKey = process.env.DELHIVERY_API;
       const productDesc = cart.map(item => item.name).join(' + ');
       if (!order_id) {
          throw new Error("Order ID must be provided and unique.");
       }
-
-       
+     
       const payload =  {
          shipments: [
            {
@@ -45,22 +44,31 @@ export const serviceAvailabilty = async (pin: string) => {
              hsn_code: "30049011",   // Required for e-waybill
              shipping_mode: "Surface", // Surface/Express
              city : formData.city, // mandatory
-             seller_name: "Gurukirpa Ayurved Jagdeep Singh", // optional
+             seller_name: "Gurukirpa Ayurveda Jagdeep Singh", // optional
              fragile_shipment: true,    // Optional, for fragile items
-             return_phone: "7009459011",// optional
+             return_phone: "9513651313",// optional"
+             consignee_gst_tin : formDataGST.gst_in, // Coustomer GST
+             consignee_tin : formDataGST.pan, // Coustomer Pancard
+             seller_gst_tin : '03GJNPS3051M1ZR',
+             seller_tin : 'GJNPS3051M',// opti
+             client_gst_tin : '04AAPCS9575E1ZV', 
+             tax_value : price * 0.12, // 12% GST
+             seller_gst_amount : price,
+             
+             seller_inv : order_id,
              shipment_height: 5,
              shipment_width: 5,
              shipment_length : 5,
              commodity_value: price,    
              return_city: "Amritsar",  // optional
              weight: "100 (gms)",
-          
+             qc : {"item":cart},
              category_of_goods: "Ayurved", // optional
              return_country: "India",   // optional
              products_desc: `${productDesc} | Ayurvedic Products`, // optional, for intra-state
-             state: "Punjab",        // optional
+             state: formData.state,        // optional
              dangerous_good: false,
-             waybill : "",     // optional, True/False
+             waybill : "",     
              order_date: new Date().toISOString(), // optional
              return_add: "daburji bye pass , near goldan gate , darshan avenue , opposite skoda agency", // optional
              total_amount: price,       // optional
@@ -68,7 +76,7 @@ export const serviceAvailabilty = async (pin: string) => {
              country: "India",          // optional
              return_pin: "143001",      // optional
              extra_parameters: {        // optional
-               return_reason: "Damaged Item"
+               return_reason: ""
              },
              return_name: "Return Name", // optional
              plastic_packaging: false,   // optional
@@ -101,7 +109,6 @@ export const serviceAvailabilty = async (pin: string) => {
             },
             body: requestBody
          });
-         console.log('Shipment Creation:', response);
          const data = await response.json();
    
          console.log('Shipment Creation:', JSON.stringify(data, null, 2));

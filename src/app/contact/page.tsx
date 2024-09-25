@@ -57,7 +57,7 @@ const ContactPage = () => {
             </p>
             <ul className="list-disc list-inside mb-4">
                <li><span className="text-gold">Email: </span> {process.env.MAIL}</li>
-               <li><span className="text-gold">Phone:</span> +91 70094 59001</li>
+               <li><span className="text-gold">Phone:</span> +91 95136 51313</li>
                <li className="w-[95%] md:w-[40%] "><span className="text-gold">Address:</span> 2/2B, Darshan Avenue, Daburji Byepass, SpeedPost Centre BDC, Amritsar -I, Amritsar- 143001, Punjab</li>
             </ul>
             <h2 className="text-2xl font-bold text-gold mb-2">2. Mailing Address</h2>

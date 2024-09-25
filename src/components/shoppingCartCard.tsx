@@ -2,7 +2,6 @@ import React from 'react';
 import { X } from 'lucide-react';
 import CartCard from "@/components/cartItem";
 import { useCart } from '@/components/cartContext';
-import { Button } from './ui/button';
 import Link from 'next/link';
 
 export const ShoppingCart = ({clickOutside, setOpenCart} :{clickOutside :React.RefObject<HTMLDivElement>, setOpenCart : (value :  boolean)=> void}) => {
@@ -41,7 +40,7 @@ export const ShoppingCart = ({clickOutside, setOpenCart} :{clickOutside :React.R
     }, 0);
 
   return (
-        <div ref={clickOutside} className="absolute top-10 md:top-16 -right-2 md:right-[5%] mt-4 mr-4 p-4 bg-white shadow-lg rounded-lg w-96 z-50">
+        <div className="absolute top-10 -right-3 md:right-[5%] mt-4 mr-4 p-4 bg-white shadow-lg rounded-lg w-[22rem] md:w-[24rem] z-50">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-semibold">Your Cart</h2>
             <button

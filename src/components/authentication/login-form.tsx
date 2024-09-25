@@ -72,8 +72,9 @@ export const LoginForm = () => {
                               placeholder='yournice@email.com'
                               type='email'
                               disabled={isPending}
-                              className='border border-gold rounded-md text-xs p-2 w-full active:outline-none focus:outline-none focus:ring-2 focus:ring-gold '
-                              />
+                              className='border border-gold rounded-md text-xs p-2 w-full active:outline-none focus:outline-none focus:ring-2 focus:ring-gold'
+                              autoComplete="email"
+                             />
                            </FormControl>
                            <FormMessage>{form.formState.errors.email?.message}</FormMessage>
                         </FormItem>
@@ -92,6 +93,7 @@ export const LoginForm = () => {
                               type='password'
                               disabled={isPending}
                               className='border border-gold rounded-md text-xs p-2 w-full active:outline-none focus:outline-none focus:ring-2 focus:ring-gold '
+                              autoComplete="current-password"
                               />
                            </FormControl>
                            <Button

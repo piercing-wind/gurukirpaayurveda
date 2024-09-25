@@ -97,7 +97,7 @@ const TermsAndConditionsPage = () => {
         </p>
         <p className="text-lg mb-4">
           <span className="text-gold">Email: </span> {process.env.MAIL}<br />
-          <span className="text-gold">Phone: </span>+91 70094 59011<br />
+          <span className="text-gold">Phone: </span>+91 95136 51313<br />
           <span className="text-gold">Address:</span> 2/2B, Darshan Avenue, Daburji Byepass, SpeedPost Centre BDC, Amritsar -I, Amritsar- 143001, Punjab
 
         </p>

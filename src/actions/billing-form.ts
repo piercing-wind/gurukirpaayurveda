@@ -1,5 +1,5 @@
 'use server'
-import { AddressSchema } from '@/schemas';
+import { AddressSchema, GST_IN } from '@/schemas';
 import * as z from 'zod';
 import Razorpay from 'razorpay';
 import { getUserSession } from '@/actions/userSession';
@@ -8,6 +8,7 @@ import { db } from '@/lib/db';
 import { Product } from '@/types/type';
 import { createHmac } from 'crypto';
 import { createShipment, trackShipment } from './delhivery';
+import { OrderDetails, sendBill } from '@/lib/mail';
 
 
 const razorpayInstance = new Razorpay({
@@ -105,7 +106,7 @@ export const successPayment = async (orderId : string, razorpay_payment_id: stri
 }
 
 
-export const createShipmentOrder = async (formData : z.infer<typeof AddressSchema>, cart : Product[], price : number, payment_mode : 'COD' | 'Pre-paid' | 'Pickup', deliveryCharge: string, rzp_order_id ?: string )=>{
+export const createShipmentOrder = async (formData : z.infer<typeof AddressSchema>, cart : Product[], price : number, payment_mode : 'COD' | 'Pre-paid' | 'Pickup', deliveryCharge: string,formDataGST : any ,rzp_order_id ?: string )=>{
    const user = await getUserSession();
    if (!user) throw new Error("User not authenticated");
 
@@ -118,7 +119,7 @@ export const createShipmentOrder = async (formData : z.infer<typeof AddressSchem
      orderId = rzp_order_id;
    }
   
-   const res = await createShipment(formData, orderId, user.name, payment_mode, cart, price);
+   const res = await createShipment(formData, orderId, user.name, payment_mode, cart, price, formDataGST);
    
    if (res.packages[0].status != 'Success') throw new Error("Error in creating shipment");
 
@@ -155,5 +156,22 @@ export const createShipmentOrder = async (formData : z.infer<typeof AddressSchem
         }
      })
    ]) 
+   const  deliveryAmmout = payment_mode != 'COD' ? parseFloat(deliveryCharge) : 0;
+   const billPrice = payment_mode != 'COD' ? price - deliveryAmmout : price;
+
+   const data :OrderDetails = {
+      orderId: orderId,
+      name : user.name,
+      userEmail : user.email,
+      userGST : formDataGST.gst_in,
+      address : formData.address + ' ' + formData.city + ' ' + formData.state + ' ' + formData.zip,
+      price:billPrice,
+      waybill: waybill,
+      products: cart,
+      paymentMode: payment_mode,
+      deliveryCharge: deliveryAmmout,
+    };
+      await sendBill(data);
    return {success : true, waybill : res.packages[0].waybill};
 }
+

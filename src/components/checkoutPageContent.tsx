@@ -4,13 +4,14 @@ import { BillingForm } from "./billing-form";
 import { useCart } from '@/components/cartContext';
 import { useEffect, useState } from 'react';
 import { SuccessPayment } from "./successPayment";
+import { SessionProvider } from "next-auth/react";
 
 
 export const CheckoutPageContent = () => {
    const { cart, updateCartItemQuantity, removeFromCart, clearCart } = useCart();
    const [isClient, setIsClient] = useState(false);
    const [activeComponent, setActiveComponent] = useState('CartCalculation'); // Default to 'CartCalculation'
-
+   
    useEffect(() => {
      setIsClient(true);
    }, []);
@@ -52,8 +53,9 @@ export const CheckoutPageContent = () => {
      return acc + discountAmount * item.quantity;
    }, 0);
    
-   const transportationCharge = (TotalAfterDiscount * 2 / 100).toFixed(2);
-   const billTotal = TotalAfterDiscount + parseFloat(transportationCharge);
+   const transportationCharge = 70;
+   const billTotal = TotalAfterDiscount ;
+   const billTotalWithCash = TotalAfterDiscount + transportationCharge;
    return(
       <section className="w-full">
     {activeComponent === 'CartCalculation'  && 
@@ -65,23 +67,25 @@ export const CheckoutPageContent = () => {
              removeFromCart={removeFromCart}
              Total={Total}
              TotalSavings={TotalSavings}
-             transportationCharge={transportationCharge}
+             transportationCharge={transportationCharge.toString()}
              billTotal={billTotal}
              setActiveComponent={setActiveComponent}
           />
          }
-    {activeComponent === 'BillingForm'  &&  
-       <BillingForm 
-         cart={cart}
-         Total={Total}
-         TotalSavings={TotalSavings}
-         transportationCharge={transportationCharge}
-         billTotal={billTotal}
-         setActiveComponent={setActiveComponent}
-         clearCart={clearCart}
-         />
-
-    }
+         <SessionProvider>
+            {activeComponent === 'BillingForm'  &&  
+               <BillingForm 
+                  cart={cart}
+                  Total={Total}
+                  TotalSavings={TotalSavings}
+                  transportationCharge={transportationCharge.toString()}
+                  billTotal={billTotal}
+                  billTotalWithCash={billTotalWithCash}
+                  setActiveComponent={setActiveComponent}
+                  clearCart={clearCart}
+                  />
+            }
+         </SessionProvider>
     {activeComponent === 'SuccessPayment'  &&  
        <SuccessPayment/>
 

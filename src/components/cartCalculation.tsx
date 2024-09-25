@@ -60,7 +60,7 @@ export const CartCalculation : React.FC<CartCalculationProps> =({cart, handleInc
                <div className="w-full my-8 flex flex-col gap-2 opacity-80">
                   <p className="font-medium flex items-center justify-between">Total Price : &nbsp;&nbsp;<span className="font-normal">₹ {Total.toFixed(2)}</span></p>
                   <p className="font-medium flex items-center justify-between">Discount Applied : &nbsp;&nbsp;<span className="font-normal text-green-500">- ₹ {TotalSavings.toFixed(2)}</span></p>
-                  <p className="font-medium flex items-center justify-between">Delivery Charge: &nbsp;&nbsp;<span className="font-normal">₹ {transportationCharge}</span></p>
+                  {/* <p className="font-medium flex items-center justify-between">Delivery Charge: &nbsp;&nbsp;<span className="font-normal">₹ {transportationCharge}</span></p> */}
                </div>
                   <p className="w-full font-medium flex items-center justify-between">Bill Total : &nbsp;&nbsp;<span className="font-semibold text-gold">₹ {billTotal.toFixed(2)}</span></p>
                <Button

@@ -40,3 +40,9 @@ export const AddressSchema = z.object({
    zip: z.string().min(6, 'Minimum 6 characters are required'),
    otherInformation: z.string().optional(),
 });
+
+export const GST_IN = z.object({
+   businesName: z.string().min(3, 'Minimum 3 characters are required'),
+   gst_in : z.string().min(15, 'Minimum 15 characters are required'),
+   pan : z.string().min(10, 'Minimum 10 characters are required'),
+});

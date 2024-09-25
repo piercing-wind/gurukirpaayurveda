@@ -166,7 +166,7 @@ export default function RootLayout({
             'title' : 'text-gold',
          }
          }}/>
-         <Link href={'https://wa.me/+917009459011?text=Hi%20*Jagdeep%20Singh*%2C%20I%E2%80%99m%20interested%20in%20your%20Ayurvedic%20products%20and%20would%20like%20to%20know%20more.%20Can%20you%20assist%20me%20with%20further%20details%3F'} className="fixed bottom-[50%] z-20 left-12 opacity-70 hover:opacity-100 hover:scale-105 transition-all duration-200 ">
+         <Link href={'https://wa.me/+919513651313?text=Hi%20*Jagdeep%20Singh*%2C%20I%E2%80%99m%20interested%20in%20your%20Ayurvedic%20products%20and%20would%20like%20to%20know%20more.%20Can%20you%20assist%20me%20with%20further%20details%3F'} className="fixed bottom-[50%] z-20 left-12 opacity-70 hover:opacity-100 hover:scale-105 transition-all duration-200 ">
             <WhatsAppGreen size={40}/>
          </Link>
       </body>

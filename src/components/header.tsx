@@ -13,6 +13,8 @@ import {TrackOrder} from "./trackOrder";
 
 export const Header = () => {
   const user = useCurrentUser()
+  const [isClient, setIsClient] = useState(false);
+
   const ref = useRef(null);
   const {cart} = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,6 +42,9 @@ export const Header = () => {
    };
  }, []);
 
+ useEffect(() => {
+   setIsClient(true);
+ }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -66,14 +71,15 @@ export const Header = () => {
           }}
         />
       </Link>
-      <ul className="hidden sm:flex gap-x-20">
+      <ul className="hidden lg:flex gap-x-14 xl:gap-x-20">
         <li><Link href="/">Home</Link></li>
         <li><Link href="/shop">Shop</Link></li>
         <li><Link href="/about">About</Link></li>
         <li><Link href="/contact">Contact</Link></li>
       </ul>
-      <ul className="hidden sm:flex gap-x-10 mr-20">
-         {!user || user === undefined ? (<Link href='/login'>Log In</Link>) : (
+      <div ref={clickOutside} className="flex gap-x-10 items-center justify-center xl:mr-20 relative">
+       <ul className="hidden lg:flex gap-x-10">
+         {!user || user === undefined ? (<Link href='/login' className="text-nowrap">Log In</Link>) : (
             <li onClick={toggleUserPopup} className="cursor-pointer">
                <User />
             </li>
@@ -104,27 +110,30 @@ export const Header = () => {
                <Truck />
               { openTrackOrder && <TrackOrder  clickOutside={clickOutside}  setOpenTrackOrder={setOpenTrackOrder}/>}
             </li>
-            <li onClick={()=>setOpenCart(!openCart)} className="cursor-pointer relative">
+          </> 
+       } 
+      </ul>
+         <div className="flex items-center gap-4">
+           {isClient &&
+            <div onClick={(e)=> setOpenCart(!openCart)} className="cursor-pointer relative">
                <ShoppingCartIcon />
-               {cart.length > 0 && 
+               {cart && cart.length > 0 && 
                   <span className="absolute -top-2 left-3 z-20 text-xs text-gold">{cart.length}</span>
                 }
-            </li>
+            </div>}
                {openCart && (
                   <ShoppingCart clickOutside={clickOutside} setOpenCart={setOpenCart}/>
                )}
-          </> 
-       }
-      </ul>
 
       {/* Mobile Menu */}
-      
-      <span onClick={toggleMenu} className="cursor-pointer sm:hidden">
+    <div onClick={(e)=>{e.stopPropagation()}} className="flex lg:hidden items-center justify-center gap-6 relative">
+
+      <span onClick={toggleMenu} className="cursor-pointer">
         {isMenuOpen ? <X size={32} className="text-gold" /> : <Menu size={32} className="text-gold" />}
       </span>
       {isMenuOpen && (
         <motion.div
-          ref={ref}
+         ref={ref} 
           initial="hidden"
           animate="visible"
           variants={menuVariants}
@@ -169,21 +178,16 @@ export const Header = () => {
                    <Truck />
                  { openTrackOrder && <TrackOrder  clickOutside={clickOutside}  setOpenTrackOrder={setOpenTrackOrder}/>}
                 </li>
-                 <li onClick={()=>setOpenCart(!openCart)} className="cursor-pointer relative">
-                    <ShoppingCartIcon />
-                    {cart.length > 0 && 
-                       <span className="absolute -top-2 left-3 z-20 text-xs text-gold">{cart.length}</span>
-                     }
-                 </li>
-                    {openCart && (
-                       <ShoppingCart clickOutside={clickOutside} setOpenCart={setOpenCart}/>
-                    )}
+      
                </> 
             }
           </ul>    
           </div> 
         </motion.div>
        )}
+       </div>
+       </div>
+      </div>
     </nav>
   );
 };
