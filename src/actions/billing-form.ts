@@ -106,7 +106,7 @@ export const successPayment = async (orderId : string, razorpay_payment_id: stri
 }
 
 
-export const createShipmentOrder = async (formData : z.infer<typeof AddressSchema>, cart : Product[], price : number, payment_mode : 'COD' | 'Pre-paid' | 'Pickup', deliveryCharge: string,formDataGST : any ,rzp_order_id ?: string )=>{
+export const createShipmentOrder = async (formData : z.infer<typeof AddressSchema>, cart : Product[], price : number, payment_mode : 'COD' | 'Pre-paid' | 'Pickup',formDataGST : any , deliveryCharge = '0',rzp_order_id ?: string )=>{
    const user = await getUserSession();
    if (!user) throw new Error("User not authenticated");
 
@@ -114,7 +114,7 @@ export const createShipmentOrder = async (formData : z.infer<typeof AddressSchem
 
    if (!rzp_order_id) {
      const order_id = uuidv4().split('-')[0];
-     orderId = `GKPA${order_id}`.substring(0, 39); // Ensure the receipt is within 40 characters
+     orderId = `GKPA${order_id}`.substring(0, 45); // Ensure the receipt is within 45 characters
    } else {
      orderId = rzp_order_id;
    }
@@ -125,8 +125,17 @@ export const createShipmentOrder = async (formData : z.infer<typeof AddressSchem
 
    const waybill = res.packages[0].waybill;
    const orderStatus = await trackShipment(waybill);
-   
 
+   const dateOptions: Intl.DateTimeFormatOptions = {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
+   
    await db.$transaction([
    db.shipping.create({
       data:{
@@ -156,22 +165,28 @@ export const createShipmentOrder = async (formData : z.infer<typeof AddressSchem
         }
      })
    ]) 
-   const  deliveryAmmout = payment_mode != 'COD' ? parseFloat(deliveryCharge) : 0;
-   const billPrice = payment_mode != 'COD' ? price - deliveryAmmout : price;
-
+   
+   const deliveryChargeInt = parseFloat(deliveryCharge);
+   const transaction_date = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.PickUpDate);
+   const expectedDeliveryDate = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.ExpectedDeliveryDate);
+   const promisedDelivery = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.PromisedDeliveryDate);   
    const data :OrderDetails = {
       orderId: orderId,
       name : user.name,
       userEmail : user.email,
       userGST : formDataGST.gst_in,
       address : formData.address + ' ' + formData.city + ' ' + formData.state + ' ' + formData.zip,
-      price:billPrice,
+      price:price,
       waybill: waybill,
       products: cart,
       paymentMode: payment_mode,
-      deliveryCharge: deliveryAmmout,
-    };
-      await sendBill(data);
+      deliveryCharge: deliveryChargeInt,
+      transaction_date: transaction_date.toLocaleString('en-US', dateOptions).replace(',', ' on'),
+      expectedDelivery: expectedDeliveryDate.toLocaleString('en-US', dateOptions).replace(',', ' on'),
+      promisedDelivery: promisedDelivery.toLocaleString('en-US', dateOptions).replace(',', ' on'),
+   };
+
+   await sendBill(data); //mail to user
    return {success : true, waybill : res.packages[0].waybill};
 }
 

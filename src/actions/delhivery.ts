@@ -140,7 +140,6 @@ export const trackShipment = async (waybillOrRefId: string, iswaybill = true) =>
       });
    
       const data = await response.json();
-      console.log('Shipment Tracking:',  JSON.stringify(data, null, 2));
       return data;
    } catch (error) {
       console.error('Error fetching shipment tracking:', error);

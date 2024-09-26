@@ -6,7 +6,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
    title: "Gurukirpa Ayurveda Shop | Vaid Gurmeet Singh",
-   metadataBase: new URL("https://vaidgurmeet.com/about"),
+   metadataBase: new URL("https://vaidgurmeetsingh.com/about"),
    description:"Learn about Gurukirpa Ayurveda, your trusted source for Ayurvedic solutions in sexual wellness and stamina enhancement. Discover our commitment to quality and holistic health.",
    applicationName: "Gurukirpa Ayurveda", 
    authors: [
@@ -23,18 +23,18 @@ export const metadata: Metadata = {
      index: true,
      follow: true,
    },
-   alternates: { canonical: "/" },
+   alternates: { canonical: "/about" },
    twitter:{
       card : 'summary_large_image'
    },
    openGraph:{
       type : 'website',
-      // url : website,
+      url : 'website',
       title : "Gurukirpa Ayurveda",
       siteName : "Gurukirpa Ayurveda",
       images:[
          {
-            url : "/GurukirpaAyurveda.svg"	,
+           url: "/opengraph-image.jpg"	,
             height : 630,  
             width : 1200,
             alt : "Gurukirpa Ayurveda | Vaid Gurmeet Singh"

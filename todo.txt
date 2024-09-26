@@ -1,3 +1,1 @@
- -> Change the Dilivery charges only applicable in the COD
- -> email change
- -> Address Change
+change cod payment success page

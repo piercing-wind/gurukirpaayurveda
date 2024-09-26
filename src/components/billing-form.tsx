@@ -67,7 +67,8 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
    const [openPaymentMode, setOpenPaymentMode] = useState<boolean>(false);
    const [submitedGST, setSubmitedGST] = useState<boolean>(false);
    const [diliveryAvailable, setDiliveryAvailable] = useState<boolean>(false);
-   
+   const [showGSTInput, setShowGSTInput] = useState<string>('IN');
+
    const defaultFormData = {
       phone: '',
       country: 'India',
@@ -186,7 +187,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
       //             successPayment(order.id, response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature, order.amount).then((response)=>{
                   
       //                if(response.status === 'captured'){
-      //                   createShipmentOrder(formData, cart, billTotal, 'Pre-paid', transportationCharge.toString(),formDataGST,response.orderId).then((response)=>{
+      //                   createShipmentOrder(formData, cart, billTotal, 'Pre-paid',formDataGST, '0',response.orderId).then((response)=>{
 
       //                      if(response.success){
       //                         toast.success(`Order Placed Successfully! Your order will be dispatched soon. Use this ${response.waybill} for track your order!`,{
@@ -270,14 +271,14 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
          return;
       }
 
-      createShipmentOrder(formData, cart, billTotalWithCash, 'COD', transportationCharge.toString(), formDataGST).then((response)=>{
+      createShipmentOrder(formData, cart, billTotal, 'COD', formDataGST, transportationCharge.toString()).then((response)=>{
          if(response.success){
             toast.success(`Order Placed Successfully! Your order will be dispatched soon. Use this ${response.waybill} for track your order!`,{
                duration: 30000,
                closeButton: true,
             });
             clearCart();
-            setActiveComponent('SuccessPayment');
+            setActiveComponent('SuccessCODOrderCreation');
          }else{
             toast.error('An error occurred while placing the order. Please try again later.',{
                duration: 20000,
@@ -285,7 +286,6 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
             });
          }
          
-         setActiveComponent('SuccessPayment');
       }).catch((error)=>{
          toast.error(`An error occurred: ${(error as Error).message}`,{
             duration: 20000,
@@ -457,6 +457,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                                  value={countries.find(country => country.label === field.value)} // Set the current value
                                  onChange={(option: CountryOption | null) => {
                                     field.onChange(option ? option.label : ''); // Handle change correctly
+                                    setShowGSTInput(option?.value!);
                                  }} 
                               />
                             )}
@@ -653,13 +654,14 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                      * Cash on Delivery will charge{" "}
                      <span className="text-red-600 font-medium">Rs. 70</span> extra.
                    </p>
-                   <span className="text-xs flex items-center">Bill Total With cash : <span className="text-gold">₹ {billTotalWithCash} /-</span></span>
+                   <span className="text-xs flex items-center">Bill Total With cash : &nbsp;<span className="text-gold font-semibold"> ₹ {billTotal + parseFloat(transportationCharge)} /-</span></span>
                  </motion.div>
                </motion.div>
                </div>
                }
             </div> 
-            <div className="flex items-center gap-4 mt-4">
+           {showGSTInput === 'IN' && 
+           <div className="flex items-center gap-4 mt-4">
                   <Checkbox
                             color="#B88E2F"
                             checked={gst_Input}
@@ -668,7 +670,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                             }}
                           />
                   <h4 className="fpnt-medium text-xs">Claim GST Input if applicable!</h4>
-            </div>
+            </div>}
                {gst_Input && <div>
                   <Form {...formForGST}>
                      <form ref={formRefGST} onSubmit={formForGST.handleSubmit(onSubmitGST_IN)}>

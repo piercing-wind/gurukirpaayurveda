@@ -4,7 +4,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
    title: "Gurukirpa Ayurveda Contact",
-   metadataBase: new URL("https://vaidgurmeet.com/about"),
+   metadataBase: new URL("https://vaidgurmeetsingh.com/about"),
    description:"Get in touch with Gurukirpa Ayurveda for inquiries about our Ayurvedic products and services. Our dedicated team is here to assist you with your health and wellness needs.",
    applicationName: "Gurukirpa Ayurveda", 
    authors: [
@@ -21,18 +21,18 @@ export const metadata: Metadata = {
      index: true,
      follow: true,
    },
-   alternates: { canonical: "/" },
+   alternates: { canonical: "/contact" },
    twitter:{
       card : 'summary_large_image'
    },
    openGraph:{
       type : 'website',
-      // url : website,
+      url : 'website',
       title : "Gurukirpa Ayurveda",
       siteName : "Gurukirpa Ayurveda",
       images:[
          {
-            url : "/GurukirpaAyurveda.svg"	,
+           url: "/opengraph-image.jpg"	,
             height : 630,  
             width : 1200,
             alt : "Gurukirpa Ayurveda"
@@ -58,12 +58,14 @@ const ContactPage = () => {
             <ul className="list-disc list-inside mb-4">
                <li><span className="text-gold">Email: </span> {process.env.MAIL}</li>
                <li><span className="text-gold">Phone:</span> +91 95136 51313</li>
-               <li className="w-[95%] md:w-[40%] "><span className="text-gold">Address:</span> 2/2B, Darshan Avenue, Daburji Byepass, SpeedPost Centre BDC, Amritsar -I, Amritsar- 143001, Punjab</li>
+               <li className="w-[95%] md:w-[40%] "><span className="text-gold">Address:</span> Shop No 13, Bus Stand, Bachre, Tarn Taran Sahib, Punjab 143401</li>
             </ul>
             <h2 className="text-2xl font-bold text-gold mb-2">2. Mailing Address</h2>
             <p className="text-lg mb-4">
                You can also reach us by mail at the following address:
             </p>
+            <span><span className="text-gold">Email: </span> {process.env.MAIL}</span>
+
             <address className="text-lg mb-4">
                {process.env.ADDRESS}
             </address>

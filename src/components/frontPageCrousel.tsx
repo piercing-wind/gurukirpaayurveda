@@ -121,7 +121,7 @@ const Carousel = () => {
         >
           <Image 
             src={images[currentIndex].image} 
-            alt="carousel" 
+            alt="Gurukirpa Ayurveda Product for sexual wellness, penis enlaregment, stamina" 
             className="h-full w-full" 
             fill
             style={{

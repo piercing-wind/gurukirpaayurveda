@@ -52,7 +52,7 @@ export const TrackOrder = ({ clickOutside,setOpenTrackOrder }: {clickOutside:Rea
 
       const response = await trackShipment(orderNumber)
       if(response.Error){
-         toast.error(`The Order id is Wrong ${response.Error}`,{
+         toast.error(`Order id is Wrong ${response.Error}`,{
             duration: 20000,
             closeButton: true
          })
@@ -66,7 +66,7 @@ export const TrackOrder = ({ clickOutside,setOpenTrackOrder }: {clickOutside:Rea
    };
    
    return (
-      <div ref={clickOutside} className="w-[24rem] ld:w-[28rem] py-8 absolute top-[3rem] -right-16 lg:right-[10%] backdrop-blur-md z-50 rounded-md ">
+      <div ref={clickOutside} className="w-[24rem] lg:w-[28rem] py-8 absolute top-[3rem] -right-6 lg:right-[10%] backdrop-blur-md z-50 rounded-md ">
       <div className="relative px-8 flex flex-col items-center justify-center ">
         {/* <span onClick={handleClose} className="absolute -top-4 bg-goldLight bg-opacity-20 rounded-full right-2 text-gold cursor-pointer"> <X size={24}  /></span> */}
          <h1 className="text-2xl font-bold">Track Your Order</h1>

@@ -5,7 +5,7 @@ import Image from "next/image"
 export const Footer=()=>{
 
    return(
-      <section className="flex flex-col md:flex-row py-10 px-10 md:px-20 justify-between">
+      <section className="flex flex-col md:flex-row py-10 px-8 md:px-20 justify-between">
          <div className="">
             <Link href='/'>
             <div className="relative w-64 h-24 mb-4">
@@ -54,7 +54,7 @@ export const Footer=()=>{
             <span className="opacity-70">Get In Touch</span>
             <ul className="flex flex-col gap-5 my-8">
                <li><Link href='tel:9513651313' className="flex items-center"><Phone size={24} />&nbsp;&nbsp;&nbsp;+91 95136 51313</Link></li>
-               <li><Link href={`mailto:${process.env.MAIL}`} className="flex items-center"><Mail size={24} />&nbsp;&nbsp;&nbsp;{process.env.MAIL}</Link></li>
+               <li><Link href={`mailto:${process.env.MAIL}`} className="flex items-center flex-wrap text-wrap break-words whitespace-normal"><Mail size={24} /> <span className="md:px-2"/> {process.env.MAIL}</Link></li>
             </ul>
          </div>
       </section>

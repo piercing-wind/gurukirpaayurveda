@@ -5,6 +5,7 @@ import { useCart } from '@/components/cartContext';
 import { useEffect, useState } from 'react';
 import { SuccessPayment } from "./successPayment";
 import { SessionProvider } from "next-auth/react";
+import { SuccessCODOrderCreation } from "./successCODOrderCreation";
 
 
 export const CheckoutPageContent = () => {
@@ -86,10 +87,14 @@ export const CheckoutPageContent = () => {
                   />
             }
          </SessionProvider>
-    {activeComponent === 'SuccessPayment'  &&  
+      {activeComponent === 'SuccessPayment'  &&  
        <SuccessPayment/>
 
-    }
+       }
+      {activeComponent === 'SuccessCODOrderCreation'  &&  
+       <SuccessCODOrderCreation/>
+
+       }
       </section>
 
    )

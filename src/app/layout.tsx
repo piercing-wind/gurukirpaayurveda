@@ -104,7 +104,7 @@ const poppins = localFont({
  
  export const metadata: Metadata = {
    title: "Gurukirpa Ayurveda | Vaid Gurmeet Singh",
-   metadataBase: new URL("https://vaidgurmeet.com"),
+   metadataBase: new URL("https://vaidgurmeetsingh.com"),
    description:"Discover Gurukirpa Ayurveda, your destination for authentic Ayurvedic products designed for sexual wellness, including penis enlargement, stamina enhancement, and vitality boosts. Experience natural solutions for improved intimacy and confidence.",
    applicationName: "Gurukirpa Ayurveda", 
    authors: [
@@ -127,12 +127,12 @@ const poppins = localFont({
    },
    openGraph:{
       type : 'website',
-      // url : website,
+      url : 'website',
       title : "Gurukirpa Ayurveda",
       siteName : "Gurukirpa Ayurveda",
       images:[
          {
-            url : "/GurukirpaAyurveda.svg"	,
+           url: "/opengraph-image.jpg"	,
             height : 630,  
             width : 1200,
             alt : "Gurukirpa Ayurveda | Vaid Gurmeet Singh"
@@ -166,7 +166,7 @@ export default function RootLayout({
             'title' : 'text-gold',
          }
          }}/>
-         <Link href={'https://wa.me/+919513651313?text=Hi%20*Jagdeep%20Singh*%2C%20I%E2%80%99m%20interested%20in%20your%20Ayurvedic%20products%20and%20would%20like%20to%20know%20more.%20Can%20you%20assist%20me%20with%20further%20details%3F'} className="fixed bottom-[50%] z-20 left-12 opacity-70 hover:opacity-100 hover:scale-105 transition-all duration-200 ">
+         <Link href={'https://wa.me/+919513651313?text=Hi%20*Vadi%20Gurmeet%20Singh*%2C%20I%E2%80%99m%20interested%20in%20your%20Ayurvedic%20products%20and%20would%20like%20to%20know%20more.%20Can%20you%20assist%20me%20with%20further%20details%3F'} className="fixed bottom-[50%] z-20 left-12 opacity-70 hover:opacity-100 hover:scale-105 transition-all duration-200 ">
             <WhatsAppGreen size={40}/>
          </Link>
       </body>
