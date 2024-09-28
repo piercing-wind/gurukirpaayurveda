@@ -36,6 +36,17 @@ export const ConsentTaking18 = () => {
       }
 
    };
+   useEffect(() => {
+      if (!user && isMounted && !hasConsented) {
+         document.body.style.overflow = 'hidden';
+      } else {
+         document.body.style.overflow = '';
+      }
+      return () => {
+         document.body.style.overflow = '';
+      };
+   }, [user, isMounted, hasConsented]);
+   
    if (user || !isMounted || hasConsented) {
       return null;
    }
