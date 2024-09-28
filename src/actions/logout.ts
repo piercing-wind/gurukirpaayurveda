@@ -6,7 +6,7 @@ export const logout = async () => {
 
    //do some stuff before logout if needed
    await signOut({
-      redirect : true,
-      redirectTo: "/"
+      redirectTo: "/",
+      redirect : true
    });
 };

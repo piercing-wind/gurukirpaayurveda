@@ -271,7 +271,7 @@ export const sendBill = async (mail:OrderDetails) => {
       <body>
         <div style="width: 100%; max-width: 700px; margin: auto; background: radial-gradient(circle, rgba(255, 215, 122, 0.4), rgba(224, 224, 224, 0.4)); padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
           <div style="text-align: center; margin-bottom: 20px;">
-            <img src="/GurukirpaAyurveda.svg" alt="Gurukirpa Ayurveda Logo" style="max-width: 100%; height: auto;">
+            <img src="https://www.vaidgurmeetsingh.com/GurukirpaAyurveda.svg" alt="Gurukirpa Ayurveda Logo" style="max-width: 100%; height: auto;">
           </div>
           <h1 style="color: #B88E2F; font-size: 2.5rem; text-align: center;">To, ${name}</h1>
           <h6 style="font-size: 1rem; text-align: center; margin-top:-20px; margin-bottom:20px; letter-spacing:0.5px">Thank you so much for your order! We’re happy to have you as a customer and really appreciate your support and trust.</h6>

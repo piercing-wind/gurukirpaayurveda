@@ -12,13 +12,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { SessionProvider } from "next-auth/react";
 import { products } from "@/products/data";
+import { ConsentTaking18 } from "@/components/consentTaking18+";
+
 
 
 export default async function Home() {
    
   return (
    <SessionProvider>
-    <main className="overflow-x-hidden">
+    <main className="overflow-x-hidden relative">
+    <ConsentTaking18 />
     <HeaderWithSessionProvider />
       <Carousel/>
       <SuperItemSection/>

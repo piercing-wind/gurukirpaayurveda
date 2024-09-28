@@ -1,7 +1,6 @@
 export const publicRoute = [
    '/',
    '/shop',
-   '/shop/[slug]',
    '/contact',
    '/new-verification',
    '/api/payment',
