@@ -21,7 +21,7 @@ export default async function Home() {
   return (
    <SessionProvider>
     <main className="overflow-x-hidden relative">
-    <ConsentTaking18 />
+    {/* <ConsentTaking18 /> */}
     <HeaderWithSessionProvider />
       <Carousel/>
       <SuperItemSection/>

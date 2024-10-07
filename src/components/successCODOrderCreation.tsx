@@ -12,7 +12,7 @@ export const SuccessCODOrderCreation = () => {
         Congratulations! Your order has been placed successfully.
       </p>
       <p className=" text-sm mt-8 text-center">
-       Your order and shipping details have been created! You'll receive an <b className='text-gold'>email</b> shortly with all the info. Your order is on its way!
+       Your order and shipping details have been created! You&apos;ll receive an <b className='text-gold'>email</b> shortly with all the info. Your order is on its way!
       </p>
       <p className="my-4 text-sm text-center">
           Thank you for choosing us! We truly value your support.
