@@ -14,29 +14,55 @@ export const products : Product[] = [
       quantity : 1
    },
    {
-      id: "2",
-      name: "Night Josh",
-      price: 1250,
-      image: "/product/night-josh-1x1.jpg",
+      id: "7",
+      name: "Hair Oil",
+      price: 800,
+      image: "/product/top3Product/hair-oil-1x1.jpg",
       subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-      description: "Boost stamina, enhance strength, and improve performance for longer, satisfying intimate moments.",
+      description: "Revitalize your hair naturally with our Ayurvedic hair care solutions, crafted to promote strength, shine, and healthy growth.",
       discount: "20%",
       rating: 4.9,
-      category: "sexual wellness",
+      category: "Hair care",
       quantity : 1
    },
    {
-      id: "3",
-      name: "Herra Bhasam Kasturi",
-      price: 4375,
-      image: "/product/herra-bhasam-kasturi-without-oil-1x1.jpg",
+      id: "8",
+      name: "Ashwagandha Powder",
+      price: 3200,
+      image: "/product/ashwagandha-1x1.jpg",
       subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-      description: "Herbal formula for enhancing penis size, boosting stamina, and supporting testosterone levels.",
+      description: "A powerful adaptogen that helps reduce stress, boost energy, improve immunity, and enhance overall vitality for a balanced, healthier lifestyle.",
       discount: "20%",
       rating: 4.9,
-      category: "sexual wellness",
+      category: "health",
       quantity : 1
    },
+   {
+      id: "9",
+      name: "Shilajit Resin",
+      price: 3600,
+      image: "/product/shilajit-resin-1x1.jpg",
+      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+      description: "Shilajit, nature's secret to enhanced stamina and rejuvenation, fuels your body with powerful energy and vitality for a vibrant life.",
+      discount: "10%",
+      rating: 4.9,
+      category: "health",
+      quantity : 1
+   },
+   {
+      id: "10",
+      name: "Chyawanprash",
+      price: 1500,
+      image: "/product/Chyawanprash-1x1.jpg",
+      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+      description: "Chyawanprash is a traditional Ayurvedic herbal jam, packed with nutrients that enhance immunity, promote vitality, and support overall health.",
+      discount: "15%",
+      rating: 4.9,
+      category: "health",
+      quantity : 1
+   },
+
+
    {
       id: "4",
       name: "Masti Capsules",
@@ -73,5 +99,28 @@ export const products : Product[] = [
       category: "sexual wellness",
       quantity : 1
    },
-   
+   {
+      id: "2",
+      name: "Night Josh",
+      price: 1250,
+      image: "/product/night-josh-1x1.jpg",
+      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+      description: "Boost stamina, enhance strength, and improve performance for longer, satisfying intimate moments.",
+      discount: "20%",
+      rating: 4.9,
+      category: "sexual wellness",
+      quantity : 1
+   },
+   {
+      id: "3",
+      name: "Herra Bhasam Kasturi",
+      price: 4375,
+      image: "/product/herra-bhasam-kasturi-without-oil-1x1.jpg",
+      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+      description: "Herbal formula for enhancing penis size, boosting stamina, and supporting testosterone levels.",
+      discount: "20%",
+      rating: 4.9,
+      category: "sexual wellness",
+      quantity : 1
+   },
 ];

@@ -7,15 +7,20 @@ import Link from 'next/link';
 
 const images = [
    {
+      image : "/product/hair-oil.jpg",
+      link : "/shop",
+      description : "Revitalize your hair naturally with our Ayurvedic hair care solutions, crafted to promote strength, shine, and healthy growth."
+   },
+   {
       image : "/product/tila-oil.jpg",
       link : "/shop/1",
       description : "Nourishing herbal oil for soothing skin, promoting relaxation, and supporting overall wellness."
    },
-   {
-      image : "/product/night-josh.jpg",
-      link : "/shop/2",
-      description : "Boost stamina, enhance strength, and improve performance for longer, satisfying intimate moments."
-   },
+   // {
+   //    image : "/product/night-josh.jpg",
+   //    link : "/shop/2",
+   //    description : "Boost stamina, enhance strength, and improve performance for longer, satisfying intimate moments."
+   // },
    {
       image : "/product/special-kutki-tablate.jpg",
       link : "/shop/5",
@@ -129,12 +134,12 @@ const Carousel = () => {
             }}
           />
 
-            <div className='h-28 w-[12rem] sm:h-48 sm:w-[20rem] md:h-96 md:w-[32rem] rounded-md z-20 absolute left-10 md:left-[15%] bottom-8 md:bottom-14 bg-[#FFF3E3] shadow-lg p-4 sm:p-6 md:px-8 flex flex-col items-start justify-center'>
+        { currentIndex != 0 &&  <div className='h-28 w-[12rem] sm:h-48 sm:w-[20rem] md:h-96 md:w-[32rem] rounded-md z-20 absolute left-10 md:left-[15%] bottom-8 md:bottom-14 bg-[#FFF3E3] shadow-lg p-4 sm:p-6 md:px-8 flex flex-col items-start justify-center'>
               <span className='tracking-widest sm:mb-4 text-[8px] sm:text-base md:text-lg'>New Arrival</span>
               <h2 className='font-extrabold text-xs sm:text-2xl md:text-3xl lg:text-5xl leading-tight text-gold mb-1 sm:mb-4'>Discover Our New Collections</h2>
               <p className='tracking-wide opacity-80 text-[8px] sm:text-sm md:text-base'>{images[currentIndex].description}</p>
               <Link href={images[currentIndex].link} className='bg-gold text-white px-2 py-1 md:py-2 sm:px-12 text-[8px] md:text-base mt-1 sm:mt-8 rounded-md hover:bg-goldLight hover:text-gold shadow-md'>Shop Now</Link>
-            </div>
+            </div>}
 
         </motion.div>
       </AnimatePresence>

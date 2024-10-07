@@ -56,6 +56,7 @@ const ContactPage = () => {
                If you have any questions or concerns about our Privacy Policy, please contact us at:
             </p>
             <ul className="list-disc list-inside mb-4">
+               <li><span className="text-gold">Legal Name: </span>Guru Kirpa Ayurveda</li>
                <li><span className="text-gold">Email: </span> {process.env.MAIL}</li>
                <li><span className="text-gold">Phone:</span> +91 95136 51313</li>
                <li className="w-[95%] md:w-[40%] "><span className="text-gold">Address:</span> Shop No 13, Bus Stand, Bachre, Tarn Taran Sahib, Punjab 143401</li>

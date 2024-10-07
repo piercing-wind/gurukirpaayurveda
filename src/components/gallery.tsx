@@ -12,7 +12,7 @@ export const Gallery =()=>{
          />
       <div className="relative h-[30vh] md:h-[100vh] w-full">
       <Image
-         src='/gallery.jpg'
+         src='/gallery-fake.jpg'
          alt='gallery'
          fill
          style={{

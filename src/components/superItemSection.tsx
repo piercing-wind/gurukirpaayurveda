@@ -59,9 +59,9 @@ interface AnimatedDivProps {
 
 export const SuperItemSection = () => {
    const items = [
-      { image: '/product/top3Product/masti-capsules.jpg', link: '/shop/4' },
+      { image: '/product/top3Product/ashwagandha.jpg', link: '/shop/8' },
       { image: '/product/top3Product/special-kutki-tablet.jpg', link: '/shop/5' },
-      { image: '/product/top3Product/herra-bhasam-kasturi.jpg', link: '/shop/6' },
+      { image: '/product/top3Product/hair-oil-1x1.jpg', link: '/shop/7' },
    ];
    const headingVariants = {
       hidden: { opacity: 0, y: -50 },

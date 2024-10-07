@@ -31,7 +31,7 @@ export default async function Home() {
 
       <section className="relative mt-24 mb-14 h-[16rem] md:h-[100vh]">
          <Image
-            src="/middleImage.jpg"
+            src="/middleImage-fake.jpg"
             alt="main product"
             fill
             style={{

@@ -17,22 +17,16 @@ import {
 import { SlidersHorizontal } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
+import { products } from "@/products/data"
 
+// Extract unique categories from products
+const uniqueCategories = Array.from(new Set(products.map(product => product.category)));
 
-const items = [
-  {
-    id: "skin care",
-    label: "Skin Care",
-  },
-  {
-    id: "sexual wellness",
-    label: "Sexual Wellness",
-  },
-  {
-    id: "health",
-    label: "Health",
-  }
-] as const
+// Map unique categories to the desired format
+const items = uniqueCategories.map(category => ({
+  id: category,
+  label: category.charAt(0).toUpperCase() + category.slice(1).replace(/-/g, ' ')
+}));
 
 const FormSchema = z.object({
   items: z.array(z.string()).refine((value) => value.some((item) => item), {
