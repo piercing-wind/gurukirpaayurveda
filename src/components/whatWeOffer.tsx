@@ -43,8 +43,7 @@ export const WhatWeOffer = () => {
             <Herbs size={100} />
             <h1 className="text-sm md:text-xl font-semibold my-2 md:mt-4">Natural Remedies</h1>
             <p className="w-[62%] text-center md:my-4 text-xs md:text-sm">
-              Experience the healing power of nature with herbal treatments and
-              Ayurvedic solutions.
+            Experience the healing power of nature with herbal treatments and natural solutions.
             </p>
           </motion.div>
           <motion.div
@@ -94,8 +93,7 @@ export const WhatWeOffer = () => {
             <HeartPump size={80} />
             <h1 className=" text-sm md:text-xl font-semibold  md:mt-6 my-2 md:my-4">Expert Guidance</h1>
             <p className="w-[75%] md:w-[65%] text-center md:my-4 text-xs md:text-sm">
-              Receive professional advice from certified Ayurveda experts for a
-              balanced, healthy lifestyle.
+            Receive professional advice from certified experts for a balanced, healthy lifestyle.
             </p>
           </motion.div>
           <motion.div
@@ -119,8 +117,7 @@ export const WhatWeOffer = () => {
               Personalized <br /> Consultations
             </h1>
             <p className="w-[75%] md:w-[65%] text-center my-2 text-xs md:text-sm">
-              Get tailored Ayurvedic health plans designed specifically for your
-              body type and wellness goals.
+            Get tailored health plans designed specifically for your body type and wellness goals to help you thrive!
             </p>
           </motion.div>
         </div>

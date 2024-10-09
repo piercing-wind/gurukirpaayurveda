@@ -56,49 +56,43 @@ const AboutPage = () => {
           About Us – Gurukirpa Ayurveda
         </h1>
         <p className="tracking-wide my-4">
-          Welcome to Gurukirpa Ayurveda, where we blend the wisdom of Ayurveda
-          with modern living to offer natural health solutions. Our mission is
-          to promote balance, wellness, and healing through high-quality
-          Ayurvedic products that support the body, mind, and spirit.
-        </p>
-         <div>
-          <h2 className="text-gold font-semibold text-2xl my-8">Why Ayurveda?</h2>
-          <p>
-            Ayurveda is an ancient system of healing that focuses on balancing
-            the three doshas—Vata, Pitta, and Kapha. It provides natural
-            remedies to restore health and harmony, focusing on the root cause
-            rather than symptoms.
-          </p>
-          <h2 className="text-gold font-semibold text-2xl my-8">Our Products</h2>
-          <p className="my-2"> We offer a wide range of Ayurvedic products designed to improve:</p>
-          <ul className={`list-disc list-inside ${CSS.list_gold_bullets} flex flex-col gap-4 my-4`}>
-            <li>Immunity and overall wellness</li>
-            <li>Digestive health and detoxification</li>
-            <li>Joint support and pain relief</li>
-            <li>Natural beauty for skin and hair</li>
-            <li>Stress relief and mental clarity</li>
-          </ul>
-         <p className="my-2">Each product is crafted from authentic herbs and ingredients, free from harmful chemicals and additives.</p>
-         
-         <h2 className="text-gold font-semibold text-2xl my-8">Health Benefits</h2>
-         
-         <ul className={`list-disc list-inside ${CSS.list_gold_bullets} flex flex-col gap-4 my-4`}>
-         <li><span className="text-gold">Natural and Safe:</span> Made with 100% natural ingredients for safe, daily use.</li>
-            <li><span className="text-gold">Boosts Immunity:</span> Strengthens the body’s natural defenses.</li>
-            <li><span className="text-gold">Detoxification:</span> Helps cleanse and rejuvenate your system.</li>
-            <li><span className="text-gold">Mind and Body Balance:</span> Supports mental clarity and emotional well-being.</li>
-          </ul>
-          <h2 className="text-gold font-semibold text-2xl my-8">Quality Commitment</h2>
+  Welcome to Gurukirpa Ayurveda, where we blend ancient wisdom with modern living to offer natural health solutions. Our mission is to promote balance and healing through high-quality products that nurture the body, mind, and spirit.
+</p>
+<div>
+  <h2 className="text-gold font-semibold text-2xl my-8">Why Choose Us?</h2>
+  <p>
+    Our approach focuses on holistic healing by addressing the root causes of health issues rather than just symptoms. We provide remedies that aim to restore harmony and balance.
+  </p>
+  
+  <h2 className="text-gold font-semibold text-2xl my-8">Our Products</h2>
+  <p className="my-2"> We offer a diverse range of natural products designed to enhance:</p>
+  <ul className={`list-disc list-inside ${CSS.list_gold_bullets} flex flex-col gap-4 my-4`}>
+    <li>Immunity and overall wellness</li>
+    <li>Digestive health and detoxification</li>
+    <li>Joint support and pain relief</li>
+    <li>Natural beauty for skin and hair</li>
+    <li>Stress relief and mental clarity</li>
+  </ul>
+  <p className="my-2">Each product is crafted from authentic herbs and ingredients, free from harmful chemicals and additives.</p>
+  
+  <h2 className="text-gold font-semibold text-2xl my-8">Health Benefits</h2>
+  
+  <ul className={`list-disc list-inside ${CSS.list_gold_bullets} flex flex-col gap-4 my-4`}>
+    <li><span className="text-gold">Natural and Safe:</span> Made with 100% natural ingredients for daily use.</li>
+    <li><span className="text-gold">Boosts Immunity:</span> Strengthens the body’s natural defenses.</li>
+    <li><span className="text-gold">Detoxification:</span> Cleanses and rejuvenates your system.</li>
+    <li><span className="text-gold">Mind and Body Balance:</span> Supports mental clarity and emotional well-being.</li>
+  </ul>
+  
+  <h2 className="text-gold font-semibold text-2xl my-8">Quality Commitment</h2>
 
-         <p className="my-2">
-          We ensure the highest standards of quality with ethically sourced ingredients and eco-friendly practices.
-          Our products are rigorously tested for purity, and we maintain sustainable, fair-trade sourcing.
-          </p>
+  <p className="my-2">
+    We uphold the highest quality standards with ethically sourced ingredients and eco-friendly practices. Our products undergo rigorous testing for purity, and we are committed to sustainable, fair-trade sourcing.
+  </p>
 
-          <h2 className="text-gold font-semibold text-2xl my-8">Our Vision</h2>
-         <p className="my-2">We aim to bring the healing power of Ayurveda to everyone, empowering people to lead healthier lives naturally.</p>
-
-         </div>
+  <h2 className="text-gold font-semibold text-2xl my-8">Our Vision</h2>
+  <p className="my-2">We strive to share the healing benefits of nature with everyone, empowering individuals to lead healthier lives naturally.</p>
+</div>
       <Link href='/shop' className="my-8 border-2 border-gold px-4 rounded-md ">
       Shop Now
       </Link>

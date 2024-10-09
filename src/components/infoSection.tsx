@@ -20,8 +20,8 @@ export const InfoSection = () => {
       >
         <h1 className="text-4xl font-bold mb-10">We Love What We do</h1>
         <div className="w-full lg:w-[22rem] gap-6 flex flex-col">
-          <p className="tracking-wide opacity-85">Ayurveda promotes natural healing, balances mind and body, boosts immunity, and supports long-term wellness through personalized remedies and lifestyle practices.</p>
-          <p className="tracking-wide opacity-85">Experience the power of personalized Ayurvedic healing with our natural remedies, designed to balance your mind, body, and spirit for lasting wellness and vitality.</p>
+          <p className="tracking-wide opacity-85">Natural healing emphasizes balance in mind and body, enhances immunity, and encourages long-term wellness through personalized remedies and lifestyle choices.</p>
+          <p className="tracking-wide opacity-85">Experience the power of personalized natural healing with our remedies, designed to balance your mind, body, and spirit for lasting wellness and vitality.</p>
         </div>
         <Link href="/shop">
         <motion.button

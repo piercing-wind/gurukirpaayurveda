@@ -8,7 +8,7 @@ import Link from 'next/link';
 const images = [
    {
       image : "/product/hair-oil.jpg",
-      link : "/shop",
+      link : "/shop/7",
       description : "Revitalize your hair naturally with our Ayurvedic hair care solutions, crafted to promote strength, shine, and healthy growth."
    },
    {
@@ -22,9 +22,9 @@ const images = [
    //    description : "Boost stamina, enhance strength, and improve performance for longer, satisfying intimate moments."
    // },
    {
-      image : "/product/special-kutki-tablate.jpg",
-      link : "/shop/5",
-      description : "Herbal remedy to support liver health, detoxify the body, and promote better digestion naturally."
+      image : "/product/aloe-vera-juice.jpg",
+      link : "/shop/13",
+      description : "Refreshing and nutritious drink that supports digestion, boosts hydration, and promotes overall wellness. Enjoy daily for health benefits."
    },
 ];
 

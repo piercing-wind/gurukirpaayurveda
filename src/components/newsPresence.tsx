@@ -22,7 +22,7 @@ export const NewsPresence = () => {
   return (
     <section className="my-20 flex flex-col items-center justify-center">
       <h1 className="text-2xl md:text-5xl font-semibold mx-auto text-center leading-snug text-gold my-8">
-        Better Health with Ayurveda <br /> 2 Million+ Happy Users
+        Better Health with Natural Remedies <br /> 2 Million+ Happy Users
       </h1>
       <div ref={ref} className="grid grid-cols-2 md:flex md:gap-4 p-4">
         {newsItems.map((news, index) => (

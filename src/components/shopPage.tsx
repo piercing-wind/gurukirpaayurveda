@@ -111,8 +111,8 @@ const ShopPage = () => {
       >
         <PriceCup size={46}/>
         <div className="flex flex-col gap-y-2 items-start">
-          <h2 className="font-bold text-sm">Uncompromised Ayurvedic Quality</h2>
-          <p className="text-opacity-70 text-xs">Pure ingredients, premium quality, guaranteed results.</p>
+        <h2 className="font-bold text-sm">Uncompromised Quality</h2>
+        <p className="text-opacity-70 text-xs">Pure ingredients, premium quality, guaranteed results.</p>
         </div>
       </motion.div>
       <motion.div
@@ -124,8 +124,8 @@ const ShopPage = () => {
       >
         <BadgeCheck size={46} className="text-gold flex-shrink-0"/>
         <div className="flex flex-col gap-y-2 items-start">
-          <h2 className="font-bold text-sm">100% Pure Ayurvedic Wellness</h2>
-          <p className="text-opacity-70 text-xs">Made with pure Ayurvedic care, naturally.</p>
+        <h2 className="font-bold text-sm">100% Pure Wellness</h2>
+         <p className="text-opacity-70 text-xs">Crafted with pure, natural ingredients for optimal care.</p>
         </div>
       </motion.div>
       <motion.div
@@ -150,8 +150,8 @@ const ShopPage = () => {
       >
         <HandCoins size={46} className="text-gold flex-shrink-0 "/>
         <div className="flex flex-col gap-y-2 items-start">
-          <h2 className="font-bold text-sm">Trusted Ayurvedic Wellness</h2>
-          <p className="text-opacity-70 text-xs">Proven quality, natural ingredients, trusted results.</p>
+        <h2 className="font-bold text-sm">Trusted Natural Wellness</h2>
+        <p className="text-opacity-70 text-xs">Proven quality, pure ingredients, reliable results.</p>
         </div>
       </motion.div>
     </section>
