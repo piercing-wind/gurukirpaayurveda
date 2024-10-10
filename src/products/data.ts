@@ -49,16 +49,28 @@ export const products : Product[] = [
    //    category: "health",
    //    quantity : 1
    // },
+   // {
+   //    id: "10",
+   //    name: "Chyawanprash",
+   //    price: 1500,
+   //    image: "/product/Chyawanprash-1x1.jpg",
+   //    subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+   //    description: "Chyawanprash is a traditional herbal jam, packed with nutrients that enhance immunity, promote vitality, and support overall health.",
+   //    discount: "15%",
+   //    rating: 4.9,
+   //    category: "health",
+   //    quantity : 1
+   // },
    {
       id: "10",
-      name: "Chyawanprash",
-      price: 1500,
-      image: "/product/Chyawanprash-1x1.jpg",
+      name: "Tulsi Acne Cream",
+      price: 700,
+      image: "/product/tulsi-acne-cream-1x1.jpg",
       subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-      description: "Chyawanprash is a traditional herbal jam, packed with nutrients that enhance immunity, promote vitality, and support overall health.",
+      description: "Natural acne treatment that soothes, heals, and clears skin using the power of tulsi herb.",
       discount: "15%",
       rating: 4.9,
-      category: "health",
+      category: "Skin care",
       quantity : 1
    },
    {
@@ -70,7 +82,7 @@ export const products : Product[] = [
       description: "Pure Aloe Vera Gel: Hydrates, soothes, and rejuvenates skin. Ideal for all skin types. Lightweight, non-greasy formula for everyday use.",
       discount: "15%",
       rating: 4.9,
-      category: "health",
+      category: "Skin care",
       quantity : 1
    },
    {
@@ -82,7 +94,7 @@ export const products : Product[] = [
       description: " Natural antibacterial cleanser that purifies and nourishes skin. Fights acne and soothes irritation for a healthy glow.",
       discount: "10%",
       rating: 4.9,
-      category: "health",
+      category: "Skin care",
       quantity : 1
    },
    {

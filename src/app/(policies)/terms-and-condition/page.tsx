@@ -19,7 +19,7 @@ const TermsAndConditionsPage = () => {
 
         <h2 className="text-2xl font-bold text-gold mb-2">3. Services and Products</h2>
         <p className="text-lg mb-4">
-          Gurukirpa Ayurveda offers Ayurvedic products, consultations, and holistic healing services. Our products and services are intended for general well-being and do not claim to cure, treat, or diagnose any diseases or health conditions. Please consult a healthcare professional before starting any new health regimen.
+          Gurukirpa Ayurveda offers health products, consultations, and holistic healing services. Our products and services are intended for general well-being and do not claim to cure, treat, or diagnose any diseases or health conditions. Please consult a healthcare professional before starting any new health regimen.
         </p>
 
         <h2 className="text-2xl font-bold text-gold mb-2">4. Use of Website</h2>
@@ -53,7 +53,7 @@ const TermsAndConditionsPage = () => {
 
         <h2 className="text-2xl font-bold text-gold mb-2">6. Consultations</h2>
         <p className="text-lg mb-4">
-          Gurukirpa Ayurveda offers Ayurvedic consultations, which are for informational purposes only and should not be considered a substitute for professional medical advice. You are advised to consult your healthcare provider before making decisions based on these consultations.
+          Gurukirpa Ayurveda offers Health consultations, which are for informational purposes only and should not be considered a substitute for professional medical advice. You are advised to consult your healthcare provider before making decisions based on these consultations.
         </p>
 
         <h2 className="text-2xl font-bold text-gold mb-2">7. Return and Refund Policy</h2>

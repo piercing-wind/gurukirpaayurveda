@@ -33,29 +33,19 @@ const RefundPolicyPage = () => {
             <li>The product must be accompanied by the original receipt, invoice, or proof of purchase.</li>
           </ul>
         </div>
-        <h3 className="text-xl font-semibold mb-2">2.2. Non-Refundable Items:</h3>
-        <div className="text-lg mb-4">
-          Certain products and services are non-refundable, including but not limited to:
-          <ul className="list-disc list-inside">
-            <li>Customized or personalized products: Any product that has been custom-made or personalized to your specifications is non-refundable.</li>
-            <li>Perishable goods: Ayurvedic food items, supplements, or products with an expiration date.</li>
-            <li>Digital products: E-books, online courses, or any digital content that has been delivered and accessed.</li>
-            <li>Gift cards and vouchers.</li>
-            <li>Products purchased during special promotions, discounted sales, or with the use of coupon codes.</li>
-          </ul>
-        </div>
-        <h3 className="text-xl font-semibold mb-2">2.3. Damaged or Defective Products:</h3>
+        
+        <h3 className="text-xl font-semibold mb-2">2.2. Damaged or Defective Products:</h3>
         <p className="text-lg mb-4">
           If you receive a damaged or defective product, you are entitled to a full refund or exchange. Please initiate your request within 3 days of receiving the item. A refund or exchange will only be processed after verification of the defect or damage.
         </p>
-        <h3 className="text-xl font-semibold mb-2">2.4. Services:</h3>
+        <h3 className="text-xl font-semibold mb-2">2.3. Services:</h3>
         <p className="text-lg mb-4">
           Refunds for services such as Ayurvedic consultations, healing sessions, and therapies are available only if the service has not been fully rendered and only within 48 hours before the scheduled session. Once the service has been provided, it is non-refundable.
         </p>
         <h2 className="text-2xl font-bold text-gold mb-2">3. Refund Process</h2>
         <h3 className="text-xl font-semibold mb-2">3.1. How to Initiate a Refund:</h3>
         <div className="text-lg mb-4">
-          To request a refund, please contact our Customer Support Team at [insert email address/contact number]. Include the following details:
+          To request a refund, please contact our Customer Support Team at {process.env.MAIL}. Include the following details:
           <ul className="list-disc list-inside">
             <li>Order Number.</li>
             <li>Reason for Refund Request.</li>
@@ -84,19 +74,13 @@ const RefundPolicyPage = () => {
         <p className="text-lg mb-4">
           If you received a product that is damaged, defective, or incorrect, you may request an exchange for the same product or an alternative product of equal value. Please notify us within 3 days of receiving the item. The replacement product will be shipped to you free of charge once the returned product has been inspected.
         </p>
-        <h3 className="text-xl font-semibold mb-2">4.2. Non-Exchangeable Items:</h3>
-        <p className="text-lg mb-4">
-          Customized, personalized, or perishable products cannot be exchanged.
-        </p>
+   
         <h2 className="text-2xl font-bold text-gold mb-2">5. Cancellations</h2>
         <h3 className="text-xl font-semibold mb-2">5.1. Product Order Cancellations:</h3>
         <p className="text-lg mb-4">
           You may cancel an order for a physical product within 24 hours of placing the order. Once the product has been shipped, cancellations are no longer allowed, and you must follow the standard return and refund process.
         </p>
-        <h3 className="text-xl font-semibold mb-2">5.2. Service Cancellations:</h3>
-        <p className="text-lg mb-4">
-          Cancellations for services such as Ayurvedic consultations, therapy sessions, or any wellness services must be made at least 48 hours before the scheduled appointment. Failure to cancel within this time frame will result in no refund.
-        </p>
+     
         <h2 className="text-2xl font-bold text-gold mb-2">6. Late or Missing Refunds</h2>
         <h3 className="text-xl font-semibold mb-2">6.1. Delayed Refunds:</h3>
         <p className="text-lg mb-4">
@@ -109,8 +93,8 @@ const RefundPolicyPage = () => {
          returned item.
          </p> 
          <h3 className="text-xl font-semibold mb-2">7.2. Free Returns for Damaged or Incorrect Items:</h3>
-          <p className="text-lg mb-4"> If the product you received was damaged, defective, or incorrect due to our error, we will cover the return shipping costs. Please contact us to arrange for the return, and we will provide you with a prepaid shipping label. </p> 
-
+          <p className="text-lg mb-2"> If the product you received was damaged, defective, or incorrect due to our error, we will cover the return shipping costs. Please contact us to arrange for the return, and we will provide you with a prepaid shipping label. </p> 
+          <p className="text-lg mb-4">We will inititiate the return with in 2 to 3 working days.</p>
         <h2 className="text-2xl font-bold text-gold mb-2">8. International Orders</h2>
         <p className="text-lg mb-4">
           For international orders, the customer is responsible for all customs duties, taxes, and return shipping costs. Gurukirpa Ayurveda is not liable for international shipping delays, customs clearance, or other unforeseen international shipping issues.

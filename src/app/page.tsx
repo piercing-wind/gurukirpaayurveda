@@ -39,7 +39,7 @@ export default async function Home() {
                zIndex: -1
             }}
          />
-            <h1 className="text-base md:text-7xl font-bold text-white absolute left-[10%] md:left-[10%] top-[20%] leading-snug">Natural Wellness <br/> With Ayurveda</h1>
+            <h1 className="text-base md:text-7xl font-bold text-white absolute left-[10%] md:left-[10%] top-[20%] leading-snug">Natural Wellness <br/> With Remedies</h1>
             <Link href="#" className="border-2 border-goldLight bg-gold hover:bg-goldLight md:py-2 px-4 md:px-16 absolute top-40 md:top-[60%] left-10 md:left-[10%] hover:text-gold hover:bg-opacity-70 transition-all duration-300 rounded-sm text-white font-semibold">Buy Now</Link>
       </section>
 
