@@ -75,6 +75,7 @@ model ResetPasswordToken {
 model Order {
    order_id          String   @id @default(uuid()) @map("_id")
    userId            String
+   gateway_order_id   String   @unique
    order_status      String
    total_price       Float
    shipping_address  Json
@@ -109,14 +110,15 @@ model Transactions {
    id                   String   @id @default(uuid()) @map("_id")
    order_id             String   
    userId               String
-   razorpay_payment_id  String   @unique
-   razorpay_order_id    String
+   payment_id           String   @unique
+   gateway_order_id     String
    payment_status       String
    payment_method       String
    transaction_amount   Float
+   taxAndFees           Float
    currency             String
    transaction_date     DateTime @default(now())
-   razorpay_response    Json?
+   webHookResponse      Json?
    createdAt            DateTime @default(now())
    updatedAt            DateTime @updatedAt
 

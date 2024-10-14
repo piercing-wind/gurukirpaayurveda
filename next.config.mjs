@@ -11,6 +11,9 @@ const nextConfig = {
    },
 
    reactStrictMode: true,
+   experimental: {
+      nextScriptWorkers: true,
+    },
  };
  
  export default nextConfig;

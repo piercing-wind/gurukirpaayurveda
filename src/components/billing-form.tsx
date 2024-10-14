@@ -23,7 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Link from "next/link";
 import { CashPayment, MasterCard, OnlinePayment, UpiIcon, Visa } from "@/components/icons";
 import { Product, RazorpayOrder } from "@/types/type";
-import { createOrder, createShipmentOrder, successPayment, verifyPayment } from "@/actions/billing-form";
+import { CreateOrder, CreateShipmentOrder, createShipmentOrder, successPayment, verifyPayment } from "@/actions/billing-form";
 import { toast } from "sonner";
 import { ArrowLeftIcon, X } from "lucide-react";
 import { serviceAvailabilty } from "@/actions/delhivery";
@@ -34,6 +34,7 @@ import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
 import { Checkbox } from "./ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
+import { PaymentOptions } from "./paymentOptions";
 
 type CountryOption = {
   value: string;
@@ -61,13 +62,15 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
    const formRef = useRef<HTMLFormElement>(null);
    const formRefGST = useRef<HTMLFormElement>(null);
    const selectId =`react-select-${uuidv4()}`
-   const amountToCharge = Math.floor(billTotal * 1000) / 10;
+   // const amountToCharge = Math.floor(billTotal * 1000) / 10;
    const description = cart.map((item)=> item.name).join(', ');
    const [gst_Input, setGSTInput] = useState<CheckedState>(false);
    const [openPaymentMode, setOpenPaymentMode] = useState<boolean>(false);
    const [submitedGST, setSubmitedGST] = useState<boolean>(false);
    const [diliveryAvailable, setDiliveryAvailable] = useState<boolean>(false);
    const [showGSTInput, setShowGSTInput] = useState<string>('IN');
+   // Opens the payment gateway
+   const [openPaymentGateway, setOpenPaymentGateway] = useState<boolean>(false);
 
    const defaultFormData = {
       phone: '',
@@ -103,13 +106,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
 
    useEffect(() => {
       setShowSelect(true);
-      const script = document.createElement('script');
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-      script.async = true;
-      document.body.appendChild(script);
-      return () => {
-         document.body.removeChild(script);
-      };
+
    }, []);
 
    const processPayment = async () => {
@@ -121,7 +118,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
          formRefGST.current.requestSubmit();
        }
       const validatedData = GST_IN.safeParse(formDataGST);
-
+      
        if (gst_Input && !validatedData.success) {
          toast.error('Please fill the GSTIN details to proceed with Cash on Delivery',{
             duration: 20000,
@@ -129,9 +126,12 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
          });
          return;
       }
-      toast.error(
-         'Online Payments are coming soon! Please use Cash on Delivery for now.',
-      )
+      // toast.error(
+      //    'Online Payments are coming soon! Please use Cash on Delivery for now.',
+      // )
+      setOpenPaymentGateway(true);
+      return;
+
 
       // try {
       
@@ -263,6 +263,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
         formRefGST.current.requestSubmit();
       }
       const validatedData = GST_IN.safeParse(formDataGST);
+      
       if (gst_Input && !validatedData.success) {
          toast.error('Please fill the GSTIN details to proceed with Cash on Delivery',{
             duration: 20000,
@@ -270,8 +271,16 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
          });
          return;
       }
+      const shipmentData : CreateShipmentOrder ={
+         formData: formData,
+         cart: cart,
+         price: billTotal,
+         payment_mode: 'COD',
+         formDataGST: formDataGST,
+         deliveryCharge : transportationCharge
+      }
 
-      createShipmentOrder(formData, cart, billTotal, 'COD', formDataGST, transportationCharge.toString()).then((response)=>{
+      createShipmentOrder(shipmentData).then((response)=>{
          if(response.success){
             toast.success(`Order Placed Successfully! Your order will be dispatched soon. Use this ${response.waybill} for track your order!`,{
                duration: 30000,
@@ -613,9 +622,10 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                 >
                   Place Order
                </Button>
+              {openPaymentGateway && ( <PaymentOptions billTotal={billTotal} user={user} formData={formData} formDataGST={formDataGST} cart={cart} setOpenPaymentGateway={setOpenPaymentGateway} setActiveComponent={setActiveComponent}/>)}
 
                { openPaymentMode &&
-               <div className="z-50 absolute -bottom-40">
+               <div className="z-40 absolute -bottom-40">
                <motion.div
                  initial="hidden"
                  animate="visible"
@@ -635,7 +645,9 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                   variants={fadeInUp}
                  >
                    <Button 
-                     onClick={() =>{  processPayment();}}
+                     onClick={() =>{  
+                        processPayment();
+                     }}
                    className="bg-white flex items-center justify-center gap-2 w-full text-gold font-medium border-2 border-gold hover:bg-goldLight hover:bg-opacity-80 transition-all duration-300">
                      <OnlinePayment /> Pay Online Now
                    </Button>
