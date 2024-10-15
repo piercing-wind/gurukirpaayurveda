@@ -34,26 +34,27 @@ export async function POST(req : NextRequest){
          }),
          db.transactions.upsert({
             where: {
-                razorpay_payment_id: payment.id
+                 payment_id : payment.id
             },
             update: {
                 payment_status: payment.status,
                 payment_method: payment.method,
                 transaction_amount: payment.amount / 100,
                 transaction_date: new Date(payment.created_at * 1000),
-                razorpay_response: razorpay
+                webHookResponse: razorpay
             },
             create: {
                 order_id: payment.order_id,
                 userId : payment.notes.userId,
-                razorpay_payment_id: payment.id,
-                razorpay_order_id: payment.order_id,
+                payment_id: payment.id,
+                gateway_order_id: payment.order_id,
                 payment_status: payment.status,
                 payment_method: payment.method,
                 transaction_amount: payment.amount / 100,
+                taxAndFees : 0,
                 currency: payment.currency,
                 transaction_date: new Date(payment.created_at * 1000),
-                razorpay_response: razorpay,
+                webHookResponse: razorpay,
             }
         })
       ])
