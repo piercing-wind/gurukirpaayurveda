@@ -3,7 +3,6 @@ import * as z from 'zod';
 import { AddressSchema, GST_IN } from "@/schemas";
 import { Product } from '@/types/type';
 export const serviceAvailabilty = async (pin: string) => {
-   console.log(process.env.DELHIVERY_API);
    try {
      const apiUrl = `https://${process.env.DELHIVERY_API_URL}/c/api/pin-codes/json/?filter_codes=${pin}`;
  
@@ -15,7 +14,6 @@ export const serviceAvailabilty = async (pin: string) => {
        }
      });
      const responseData = await response.json();
-     console.log('Service Availability:', responseData);
      return responseData;
    } catch (error) {
      console.error("Error fetching service availability:", error);
@@ -111,7 +109,6 @@ export const serviceAvailabilty = async (pin: string) => {
          });
          const data = await response.json();
    
-         console.log('Shipment Creation:', JSON.stringify(data, null, 2));
          if (!response.ok) {
             throw new Error(`Failed to create shipment: ${data.message || 'Unknown error'}`);
          }
@@ -129,7 +126,6 @@ export const serviceAvailabilty = async (pin: string) => {
 export const trackShipment = async (waybillOrRefId: string, iswaybill = true) => {
    const url = `https://${process.env.DELHIVERY_API_URL}/api/v1/packages/json/?${iswaybill ? 'waybill' : 'ref_ids'}=${waybillOrRefId}`;
    const apiKey = process.env.DELHIVERY_API;
-  console.log('Shipment Tracking:', url);
    try {
       const response = await fetch(url, {
          method: 'GET',

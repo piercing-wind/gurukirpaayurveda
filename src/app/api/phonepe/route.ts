@@ -15,7 +15,8 @@ export async function POST(req: NextRequest) {
     }
     const body = JSON.parse(payload);
 
-
+    console.log("Body ", body);
+    console.log("BSE64", body.response);
     // Extract the salt index from the received checksum 
     const [receivedChecksumValue, saltIndex] = receivedChecksum.split('###');
 

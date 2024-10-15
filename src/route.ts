@@ -11,7 +11,8 @@ export const publicRoute = [
    '/about', 
    '/api/auth',
    '/api/paypal',
-   '/api/phonepe'
+   '/api/phonepe',
+   '/success'
 ]
 
 

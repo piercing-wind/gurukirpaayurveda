@@ -22,11 +22,8 @@ const PHONEPE_BASE_URL = 'https://api.phonepe.com/apis/hermes/pg/v1/pay';
  
  export const initiatePayment = async (amount: number, orderId: string, userId: string, mobileNumber: string, callbackUrl: string): Promise<string> => {
       if (!PHONEPE_API_KEY) {
-        console.log(PHONEPE_API_KEY);
         throw new Error('PHONEPE_API_KEY is not defined');
       }
-      
-      console.log(orderId);
 
       const payload: PaymentPayload = {
         merchantId: PHONEPE_MERCHANT_ID,
@@ -52,8 +49,6 @@ const PHONEPE_BASE_URL = 'https://api.phonepe.com/apis/hermes/pg/v1/pay';
                        .update(checksumString)
                        .digest('hex') + `###${saltIndex}`;
       
-      console.log('Base64 Payload:', base64Payload);
-      console.log('Checksum:', checksum);
     
       try {
         const response = await fetch(`${PHONEPE_BASE_URL}`, {
