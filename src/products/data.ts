@@ -16,11 +16,11 @@ export const products : Product[] = [
    {
       id: "7",
       name: "Hair Oil",
-      price: 800,
+      price: 1,
       image: "/product/top3Product/hair-oil-1x1.jpg",
       subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
       description: "Revitalize your hair naturally with our Ayurvedic hair care solutions, crafted to promote strength, shine, and healthy growth.",
-      discount: "20%",
+      discount: "0%",
       rating: 4.9,
       category: "Hair care",
       quantity : 1

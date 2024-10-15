@@ -243,8 +243,10 @@ export const createShipmentOrder = async ({ formData, cart, price, payment_mode,
       },
     }),
 
-    db.order.create({
-      data: {
+    db.order.upsert({
+      where: { order_id: orderId },
+      update: {}, // No update operation needed, proceed further if order_id exists
+      create: {
         order_id: orderId,
         userId: user?.id!,
         gateway_order_id: gateway_order_id != "" ? gateway_order_id : `${orderId}`,

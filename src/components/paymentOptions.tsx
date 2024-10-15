@@ -13,7 +13,10 @@ import { toast } from "sonner";
 import { MoonLoader } from "react-spinners";
 import { XIcon } from 'lucide-react';
 import { v4 as uuidv4 } from "uuid";
-
+import PhonePePage from './phonepeModal';
+import { Button } from './ui/button';
+import { MasterCard, UpiIcon, Visa } from './icons';
+import { Landmark } from 'lucide-react';
 
 
 export interface UserData {
@@ -130,6 +133,33 @@ const PayPalButton = ({billTotal, user, formData, formDataGST, cart , setLoading
   );
 };
 
+
+const Phonepe =({billTotal, user, formData}:{ billTotal : number, user: UserData['user'], formData : z.infer<typeof AddressSchema>})=>{
+   const [showPhonepeModal, setShowPhonepeModal] = useState(false);
+   const uuid = uuidv4().replace(/[^a-zA-Z0-9_-]/g, '');
+   const referenceId = `GA${uuid}`.substring(0, 33);
+   return (
+      <div className='w-full px-1 h-full'>
+         <h5 className='text-sm'>Click below to continue</h5>
+         <Button className='bg-transparent border-2 hover:bg-opacity-40 hover:bg-goldLight border-gold flex items-center justify- w-full gap-x-6 px-4' onClick={()=>setShowPhonepeModal(true)}>
+            <UpiIcon/>
+            <MasterCard/>
+            <Visa/>
+            <Landmark className='text-gold'/>
+         </Button>
+         {showPhonepeModal && (
+            <PhonePePage 
+               amount={billTotal}
+               orderId={referenceId}
+               user={user}
+               formData={formData}
+            />
+         )}
+      </div>
+   )
+}
+
+
 export const PaymentOptions = ({billTotal, user, formData,formDataGST, cart , setOpenPaymentGateway, setActiveComponent}: {billTotal : number, user: UserData['user'], formData: z.infer<typeof AddressSchema>,formDataGST : z.infer<typeof GST_IN>, cart: Product[], setOpenPaymentGateway :(v:boolean)=> void, setActiveComponent: (v: string)=> void}) => {
    const [loading, setLoading] = useState(true);
    const handleClose=()=>{
@@ -142,16 +172,24 @@ export const PaymentOptions = ({billTotal, user, formData,formDataGST, cart , se
 
    return (
       <div className="fixed h-screen w-full flex items-center justify-center top-0 left-0 z-50">
-      <div className={`w-96 relative border p-5 rounded-lg shadow-md m-auto mt-14 max-h-[80vh] overflow-y-scroll backdrop-blur-md flex flex-col gap-y-10 items-center justify-center ${CSS.scrollbar}`}>
+      <div className={`w-96 relative border p-5 rounded-lg shadow-md m-auto max-h-[80vh] overflow-auto backdrop-blur-md flex flex-col gap-y-10 items-center ${CSS.scrollbar}`}>
          <div className='flex items-center justify-between w-full px-1'>
             <h5 className='text-sm'>Please Select Your Payment Method</h5>
             <XIcon className=' cursor-pointer z-50' onClick={handleClose} />
          </div>
+         <Phonepe 
+            billTotal={billTotal}
+            user={user}
+            formData={formData}
+         />
+         <div className='w-[80%] mx-auto border-b-2 border-dashed border-gold'/>
+         <p className='text-xs'>User&apos;s Outside the India Please use PayPal</p>
         {loading ? (
           <span className='absolute left-0 top-0 flex items-center justify-center z-50 backdrop-blur-sm h-full w-full'>
             <MoonLoader color="#b88e2f" loading className='m-5' />
           </span>
         ) : null}
+
         <PayPalButton billTotal={billTotal} user={user} formData={formData} formDataGST={formDataGST} cart={cart} setLoading={setLoading} setOpenPaymentGateway={setOpenPaymentGateway} setActiveComponent={setActiveComponent} />
       </div>
     </div>
