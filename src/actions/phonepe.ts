@@ -3,7 +3,7 @@ import crypto from 'crypto';
 
 const PHONEPE_MERCHANT_ID = process.env.PHONEPE_MERCHANT_ID!;
 const PHONEPE_API_KEY = process.env.PHONEPE_API_KEY!;
-const PHONEPE_BASE_URL = 'https://api.phonepe.com/apis/hermes/pg/v1/pay';
+const PHONEPE_BASE_URL = 'https://api.phonepe.com/apis/hermes/pg/v1';
 
 
  interface PaymentPayload {
@@ -30,8 +30,8 @@ const PHONEPE_BASE_URL = 'https://api.phonepe.com/apis/hermes/pg/v1/pay';
         merchantTransactionId: orderId,
         merchantUserId: userId,
         amount: amount * 100, // Amount in paise
-        redirectUrl: 'https://vaidgurmeetsingh.com/success',
-        redirectMode: 'REDIRECT',
+        redirectUrl: 'https://vaidgurmeetsingh.com/api/dump',
+        redirectMode: 'POST',
         callbackUrl: callbackUrl,
         paymentInstrument: {
           type: 'PAY_PAGE',
@@ -49,11 +49,8 @@ const PHONEPE_BASE_URL = 'https://api.phonepe.com/apis/hermes/pg/v1/pay';
                        .update(checksumString)
                        .digest('hex') + `###${saltIndex}`;
       
-    
-      console.log("Checksum", checksum);
-
       try {
-        const response = await fetch(`${PHONEPE_BASE_URL}`, {
+        const response = await fetch(`${PHONEPE_BASE_URL}/pay`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -80,3 +77,65 @@ const PHONEPE_BASE_URL = 'https://api.phonepe.com/apis/hermes/pg/v1/pay';
         throw error;
       }
     };
+
+
+    interface PaymentInstrument {
+      type: string;
+      utr: string | null;
+      cardNetwork: string | null;
+      accountType: string;
+    }
+    
+    interface FeesContext {
+      amount: number;
+    }
+    
+    interface PaymentData {
+      merchantId: string;
+      merchantTransactionId: string;
+      transactionId: string;
+      amount: number;
+      state: string;
+      responseCode: string;
+      paymentInstrument: PaymentInstrument;
+      feesContext: FeesContext;
+    }
+    
+    interface PaymentStatusResponse {
+      success: boolean;
+      code: string;
+      message: string;
+      data: PaymentData;
+    }
+export const statusCheck = async (orderId: string): Promise<PaymentStatusResponse> => {
+
+   const endpoint = `/pg/v1/status/${PHONEPE_MERCHANT_ID}/${orderId}`;
+   const saltIndex = 1;
+   const checksumString = endpoint + PHONEPE_API_KEY;
+
+   const checksum = crypto.createHash('sha256')
+                          .update(checksumString)
+                          .digest('hex') + "###" + saltIndex;
+   
+   try {
+      const response = await fetch(`${PHONEPE_BASE_URL}/status/${PHONEPE_MERCHANT_ID}/${orderId}`, {
+         method: 'GET',
+         headers: {
+         'Content-Type': 'application/json',
+         'X-VERIFY': checksum,
+         "X-MERCHANT-ID": PHONEPE_MERCHANT_ID,
+         },
+      });
+    
+      if (!response.ok) {
+         const errorText = await response.text();
+         console.error('Response Error:', errorText);
+         throw new Error(`Failed to check payment status: ${response.statusText}`);
+      }
+      const data: PaymentStatusResponse = await response.json();
+      return data;
+   } catch (error) {
+      console.error('Error checking payment status:', error);
+      throw error;
+   }
+}

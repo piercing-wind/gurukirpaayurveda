@@ -6,13 +6,11 @@ import CSS from "@/app/checkout/checkout.module.css";
 import { User } from 'next-auth';
 import { AddressSchema, GST_IN } from '@/schemas';
 import * as z from 'zod';
-import { countries } from '@/lib/countriesList';
 import { createPaypalOrder, getAccessToken, CreatePaypalOrder, CreateOrder, successPayment, SuccessPayment, createShipmentOrder, CreateShipmentOrder} from "@/actions/billing-form";
 import { Product } from '@/types/type';
 import { toast } from "sonner";
 import { MoonLoader } from "react-spinners";
 import { XIcon } from 'lucide-react';
-import { v4 as uuidv4 } from "uuid";
 import PhonePePage from './phonepeModal';
 import { Button } from './ui/button';
 import { MasterCard, UpiIcon, Visa } from './icons';
@@ -23,9 +21,7 @@ export interface UserData {
   user: (User & { role: "ADMIN" | "USER"; }) | undefined;
 }
 
-const PayPalButton = ({billTotal, user, formData, formDataGST, cart , setLoading,setOpenPaymentGateway,setActiveComponent}: {billTotal : number, user: UserData['user'], formData: z.infer<typeof AddressSchema>,formDataGST: z.infer<typeof GST_IN> , cart :  Product[], setLoading : (v: boolean)=> void ,setOpenPaymentGateway: (v: boolean)=> void,setActiveComponent: (v: string)=> void}) => {
-   const shortUuid = uuidv4().replace('-', ''); // Shorten the UUID
-   const referenceId = `GKPA#${shortUuid}`.substring(0, 39);
+const PayPalButton = ({billTotal, user,referenceId, formData, formDataGST, cart , setLoading,setOpenPaymentGateway,setActiveComponent}: {billTotal : number, user: UserData['user'], referenceId : string,formData: z.infer<typeof AddressSchema>,formDataGST: z.infer<typeof GST_IN> , cart :  Product[], setLoading : (v: boolean)=> void ,setOpenPaymentGateway: (v: boolean)=> void,setActiveComponent: (v: string)=> void}) => {
 
    const amountToChargeInDollars = billTotal / parseFloat(process.env.NEXT_PUBLIC_EXCHANGE_RATE_FOR_DOLLAR ?? '84') ; // 1 USD = 84 INR Current Exchange Rate Today : 14 October 2024 
 
@@ -134,14 +130,13 @@ const PayPalButton = ({billTotal, user, formData, formDataGST, cart , setLoading
 };
 
 
-const Phonepe =({billTotal, user, formData}:{ billTotal : number, user: UserData['user'], formData : z.infer<typeof AddressSchema>})=>{
+const Phonepe =({billTotal, user, orderId, formData, setStartStatusCheck}:{ billTotal : number, user: UserData['user'],orderId : string, formData : z.infer<typeof AddressSchema>, setStartStatusCheck: (v:boolean)=> void})=>{
    const [showPhonepeModal, setShowPhonepeModal] = useState(false);
-   const uuid = uuidv4().replace(/[^a-zA-Z0-9_-]/g, '');
-   const referenceId = `GA${uuid}`.substring(0, 33);
+
    return (
       <div className='w-full px-1 h-full'>
          <h5 className='text-sm'>Click below to continue</h5>
-         <Button className='bg-transparent border-2 hover:bg-opacity-40 hover:bg-goldLight border-gold flex items-center justify- w-full gap-x-6 px-4' onClick={()=>setShowPhonepeModal(true)}>
+         <Button className='bg-transparent border-2 hover:bg-opacity-40 hover:bg-goldLight border-gold flex items-center justify- w-full gap-x-6 px-4' onClick={()=>{setStartStatusCheck(true);setShowPhonepeModal(true)}}>
             <UpiIcon/>
             <MasterCard/>
             <Visa/>
@@ -150,7 +145,7 @@ const Phonepe =({billTotal, user, formData}:{ billTotal : number, user: UserData
          {showPhonepeModal && (
             <PhonePePage 
                amount={billTotal}
-               orderId={referenceId}
+               orderId={orderId}
                user={user}
                formData={formData}
             />
@@ -159,15 +154,15 @@ const Phonepe =({billTotal, user, formData}:{ billTotal : number, user: UserData
    )
 }
 
-
-export const PaymentOptions = ({billTotal, user, formData,formDataGST, cart , setOpenPaymentGateway, setActiveComponent}: {billTotal : number, user: UserData['user'], formData: z.infer<typeof AddressSchema>,formDataGST : z.infer<typeof GST_IN>, cart: Product[], setOpenPaymentGateway :(v:boolean)=> void, setActiveComponent: (v: string)=> void}) => {
+export const PaymentOptions = ({billTotal, user, formData, setStartStatusCheck,formDataGST, cart , orderId, setOpenPaymentGateway, setActiveComponent}: {billTotal : number, user: UserData['user'], formData: z.infer<typeof AddressSchema>,formDataGST : z.infer<typeof GST_IN>, cart: Product[],orderId : string, setStartStatusCheck : (v: boolean)=> void,setOpenPaymentGateway :(v:boolean)=> void, setActiveComponent: (v: string)=> void}) => {
    const [loading, setLoading] = useState(true);
    const handleClose=()=>{
-      toast.error('Transaction cancelled, You have returned during the payment processing. Please try again',{
+      toast.error(<div><span className='text-red-600 font-semibold'>Transaction cancelled ☹ </span>, You returned during the payment process. Please try again</div>,{
          duration: 20000,
          closeButton: true,
       });
       setOpenPaymentGateway(false);
+      setStartStatusCheck(false);
    }
 
    return (
@@ -181,6 +176,8 @@ export const PaymentOptions = ({billTotal, user, formData,formDataGST, cart , se
             billTotal={billTotal}
             user={user}
             formData={formData}
+            orderId={orderId}
+            setStartStatusCheck={setStartStatusCheck}
          />
          <div className='w-[80%] mx-auto border-b-2 border-dashed border-gold'/>
          <p className='text-xs'>User&apos;s Outside the India Please use PayPal</p>
@@ -190,7 +187,7 @@ export const PaymentOptions = ({billTotal, user, formData,formDataGST, cart , se
           </span>
         ) : null}
 
-        <PayPalButton billTotal={billTotal} user={user} formData={formData} formDataGST={formDataGST} cart={cart} setLoading={setLoading} setOpenPaymentGateway={setOpenPaymentGateway} setActiveComponent={setActiveComponent} />
+        <PayPalButton billTotal={billTotal} user={user} referenceId={orderId} formData={formData} formDataGST={formDataGST} cart={cart} setLoading={setLoading} setOpenPaymentGateway={setOpenPaymentGateway} setActiveComponent={setActiveComponent} />
       </div>
     </div>
   );

@@ -154,10 +154,11 @@ export type SuccessPayment = {
    paymentGateway : string;
    paymentStatus : string;
    transactionDate : Date;
-   taxAndFees :  number | string   
+   taxAndFees :  number | string,   
+   webHookResponse ?: unknown
 }
 
-export const successPayment = async ({ orderId, paymentId, gateway_order_id, amount, paymentGateway, paymentStatus, transactionDate,taxAndFees}:SuccessPayment) => {
+export const successPayment = async ({ orderId, paymentId, gateway_order_id, amount, paymentGateway, paymentStatus, transactionDate,taxAndFees, webHookResponse}:SuccessPayment) => {
   const user = await getUserSession();
   if (!user) throw new Error("User not authenticated");
   try {

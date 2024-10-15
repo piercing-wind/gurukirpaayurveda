@@ -6,13 +6,16 @@ import { useEffect, useState } from 'react';
 import { SuccessPayment } from "./successPayment";
 import { SessionProvider } from "next-auth/react";
 import { SuccessCODOrderCreation } from "./successCODOrderCreation";
-
+import ClipLoader from 'react-spinners/ClipLoader';
+import PulseLoader from 'react-spinners/PulseLoader';
 
 export const CheckoutPageContent = () => {
    const { cart, updateCartItemQuantity, removeFromCart, clearCart } = useCart();
    const [isClient, setIsClient] = useState(false);
    const [activeComponent, setActiveComponent] = useState('CartCalculation'); // Default to 'CartCalculation'
-   
+   const [startStatusCheck, setStartStatusCheck] = useState<boolean>(false);
+
+
    useEffect(() => {
      setIsClient(true);
    }, []);
@@ -58,9 +61,16 @@ export const CheckoutPageContent = () => {
    const billTotal = TotalAfterDiscount ;
    const billTotalWithCash = TotalAfterDiscount + transportationCharge;
    return(
-      <section className="w-full">
-    {activeComponent === 'CartCalculation'  && 
+      <section className="w-full relative">
+         {startStatusCheck &&
+            <div className="fixed top-10 left-5 p-4 flex flex-col items-center h-32 w-80 bg-white shadow-lg rounded-md border-2 border-gold z-20">
+               <h6 className="font-semibold text-lg mb-2 flex items-end justify-between">Fetching Payment Status <PulseLoader className="mb-2" size={5} loading color="#b88e2f" /></h6>
+               <p>Please do not <span className="font-semibold text-gold text-md">refresh</span> the page or go back.</p>
+               <span className="absolute right-4 bottom-1"><ClipLoader loading color="#b88e2f"/></span>
+            </div>
+         }
 
+      {activeComponent === 'CartCalculation'  && 
           <CartCalculation 
              cart={cart}
              handleIncrease={handleIncrease}
@@ -82,8 +92,10 @@ export const CheckoutPageContent = () => {
                   transportationCharge={transportationCharge.toString()}
                   billTotal={billTotal}
                   billTotalWithCash={billTotalWithCash}
+                  startStatusCheck={startStatusCheck}
                   setActiveComponent={setActiveComponent}
                   clearCart={clearCart}
+                  setStartStatusCheck={setStartStatusCheck}
                   />
             }
          </SessionProvider>

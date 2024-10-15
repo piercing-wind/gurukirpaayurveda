@@ -15,8 +15,6 @@ export async function POST(req: NextRequest) {
     }
     const body = JSON.parse(payload);
 
-    console.log("Body ", body);
-    console.log("BSE64", body.response);
     // Extract the salt index from the received checksum 
     const [receivedChecksumValue, saltIndex] = receivedChecksum.split('###');
 
@@ -27,11 +25,8 @@ export async function POST(req: NextRequest) {
 
     // Generate the expected checksum
     const expectedChecksum = crypto.createHash('sha256')
-    .update(body + PHONEPE_API_KEY)
+    .update(body.response + PHONEPE_API_KEY)
     .digest('hex');
-
-    console.log('Expected Checksum:', expectedChecksum);
-    console.log('Received Checksum:', receivedChecksumValue);
 
     if (receivedChecksumValue !== expectedChecksum) {
       return Response.json({ error: 'Unauthorized', message: 'Checksum validation failed' }, { status: 401 });
@@ -51,13 +46,13 @@ export async function POST(req: NextRequest) {
          orderId: data.data.merchantTransactionId,
          paymentId: data.data.transactionId,
          gateway_order_id: data.data.transactionId,
-         amount: data.data.amount,
+         amount: data.data.amount / 100,
          paymentGateway: 'PhonePe',
          paymentStatus: data.data.state,
          transactionDate: new Date(),
-         taxAndFees: '0'
+         taxAndFees: '0',
+         webHookResponse: data
     }
-
     const saveTransaction = await successPayment(saveTransactionData)
 
    if(saveTransaction){

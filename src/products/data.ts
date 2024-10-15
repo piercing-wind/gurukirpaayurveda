@@ -14,17 +14,29 @@ export const products : Product[] = [
       quantity : 1
    },
    {
-      id: "7",
-      name: "Hair Oil",
-      price: 1,
-      image: "/product/top3Product/hair-oil-1x1.jpg",
+      id: "2",
+      name: "Night Josh",
+      price: 1250,
+      image: "/product/night-josh-1x1.jpg",
       subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-      description: "Revitalize your hair naturally with our Ayurvedic hair care solutions, crafted to promote strength, shine, and healthy growth.",
-      discount: "0%",
+      description: "Boost stamina, enhance strength, and improve performance for longer, satisfying intimate moments.",
+      discount: "20%",
       rating: 4.9,
-      category: "Hair care",
+      category: "sexual wellness",
       quantity : 1
    },
+   // {
+   //    id: "7",
+   //    name: "Hair Oil",
+   //    price: 1,
+   //    image: "/product/top3Product/hair-oil-1x1.jpg",
+   //    subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+   //    description: "Revitalize your hair naturally with our Ayurvedic hair care solutions, crafted to promote strength, shine, and healthy growth.",
+   //    discount: "0%",
+   //    rating: 4.9,
+   //    category: "Hair care",
+   //    quantity : 1
+   // },
    // {
    //    id: "8",
    //    name: "Ashwagandha Powder",
@@ -61,18 +73,18 @@ export const products : Product[] = [
    //    category: "health",
    //    quantity : 1
    // },
-   {
-      id: "10",
-      name: "Tulsi Acne Cream",
-      price: 700,
-      image: "/product/tulsi-acne-cream-1x1.jpg",
-      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-      description: "Natural acne treatment that soothes, heals, and clears skin using the power of tulsi herb.",
-      discount: "15%",
-      rating: 4.9,
-      category: "Skin care",
-      quantity : 1
-   },
+   // {
+   //    id: "10",
+   //    name: "Tulsi Acne Cream",
+   //    price: 700,
+   //    image: "/product/tulsi-acne-cream-1x1.jpg",
+   //    subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+   //    description: "Natural acne treatment that soothes, heals, and clears skin using the power of tulsi herb.",
+   //    discount: "15%",
+   //    rating: 4.9,
+   //    category: "Skin care",
+   //    quantity : 1
+   // },
    {
       id: "11",
       name: "Aloe Vera Gel",
@@ -110,65 +122,52 @@ export const products : Product[] = [
       quantity : 1
    },
 
-
-   // {
-   //    id: "4",
-   //    name: "Masti Capsules",
-   //    price: 3125,
-   //    image: "/product/masti-capsules-1x1.jpg",
-   //    subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-   //    description: "Natural supplement to enhance stamina, boost libido, and improve overall sexual vitality.",
-   //    discount: "20%",
-   //    rating: 4.9,
-   //    category: "sexual wellness",
-   //    quantity : 1
-   // },
-   // {
-   //    id: "5",
-   //    name: "Special Kutki Tablets",
-   //    price: 426.83,
-   //    image: "/product/special-kutki-tablate-1x1.jpg",
-   //    subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-   //    description: "Herbal remedy to support liver health, detoxify the body, and promote better digestion naturally.",
-   //    discount: "18%",
-   //    rating: 5.0,
-   //    category: "health",
-   //    quantity : 1
-   // },
-   // {
-   //    id: "6",
-   //    name: "Herra Bhasam Kasturi + Night Josh",
-   //    price: 5625,
-   //    image: "/product/herra-bhasam-kasturi-1x1.jpg",
-   //    subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-   //    description: "Herbal formula for enhancing penis size, boosting stamina, and supporting testosterone levels.",
-   //    discount: "20%",
-   //    rating: 4.9,
-   //    category: "sexual wellness",
-   //    quantity : 1
-   // },
-   // {
-   //    id: "2",
-   //    name: "Night Josh",
-   //    price: 1250,
-   //    image: "/product/night-josh-1x1.jpg",
-   //    subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-   //    description: "Boost stamina, enhance strength, and improve performance for longer, satisfying intimate moments.",
-   //    discount: "20%",
-   //    rating: 4.9,
-   //    category: "sexual wellness",
-   //    quantity : 1
-   // },
-   // {
-   //    id: "3",
-   //    name: "Herra Bhasam Kasturi",
-   //    price: 4375,
-   //    image: "/product/herra-bhasam-kasturi-without-oil-1x1.jpg",
-   //    subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-   //    description: "Herbal formula for enhancing penis size, boosting stamina, and supporting testosterone levels.",
-   //    discount: "20%",
-   //    rating: 4.9,
-   //    category: "sexual wellness",
-   //    quantity : 1
-   // },
+   {
+      id: "4",
+      name: "Masti Capsules",
+      price: 3125,
+      image: "/product/masti-capsules-1x1.jpg",
+      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+      description: "Natural supplement to enhance stamina, boost libido, and improve overall sexual vitality.",
+      discount: "20%",
+      rating: 4.9,
+      category: "sexual wellness",
+      quantity : 1
+   },
+   {
+      id: "5",
+      name: "Special Kutki Tablets",
+      price: 426.83,
+      image: "/product/special-kutki-tablate-1x1.jpg",
+      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+      description: "Herbal remedy to support liver health, detoxify the body, and promote better digestion naturally.",
+      discount: "18%",
+      rating: 5.0,
+      category: "health",
+      quantity : 1
+   },
+   {
+      id: "6",
+      name: "Herra Bhasam Kasturi + Night Josh",
+      price: 5625,
+      image: "/product/herra-bhasam-kasturi-1x1.jpg",
+      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+      description: "Herbal formula for enhancing penis size, boosting stamina, and supporting testosterone levels.",
+      discount: "20%",
+      rating: 4.9,
+      category: "sexual wellness",
+      quantity : 1
+   },
+   {
+      id: "3",
+      name: "Herra Bhasam Kasturi",
+      price: 4375,
+      image: "/product/herra-bhasam-kasturi-without-oil-1x1.jpg",
+      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+      description: "Herbal formula for enhancing penis size, boosting stamina, and supporting testosterone levels.",
+      discount: "20%",
+      rating: 4.9,
+      category: "sexual wellness",
+      quantity : 1
+   },
 ];

@@ -22,7 +22,7 @@ import { countries } from "@/lib/countriesList";
 import { v4 as uuidv4 } from 'uuid';
 import Link from "next/link";
 import { CashPayment, MasterCard, OnlinePayment, UpiIcon, Visa } from "@/components/icons";
-import { Product, RazorpayOrder } from "@/types/type";
+import { Product } from "@/types/type";
 import { CreateOrder, CreateShipmentOrder, createShipmentOrder, successPayment, verifyPayment } from "@/actions/billing-form";
 import { toast } from "sonner";
 import { ArrowLeftIcon, X } from "lucide-react";
@@ -35,6 +35,7 @@ import { Label } from "./ui/label";
 import { Checkbox } from "./ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { PaymentOptions } from "./paymentOptions";
+import { statusCheck } from "@/actions/phonepe";
 
 type CountryOption = {
   value: string;
@@ -48,12 +49,14 @@ type BillingFormProps = {
    transportationCharge: string;
    billTotal: number;
    billTotalWithCash: number;
+   startStatusCheck: boolean;
    setActiveComponent: (value: string) => void;
    clearCart: () => void;
+   setStartStatusCheck: (value: boolean) => void;
 }
 
 
-export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavings, transportationCharge, billTotal,billTotalWithCash, setActiveComponent, clearCart}) => {
+export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavings, transportationCharge, billTotal,billTotalWithCash,startStatusCheck, setActiveComponent, clearCart,setStartStatusCheck}) => {
    const user = useCurrentUser()
    const [isPending, setIsPending] = useState<boolean>(false);
    const [loading, startTransition] = useTransition();
@@ -71,6 +74,110 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
    const [showGSTInput, setShowGSTInput] = useState<string>('IN');
    // Opens the payment gateway
    const [openPaymentGateway, setOpenPaymentGateway] = useState<boolean>(false);
+   const uuid = uuidv4().replace(/[^a-zA-Z0-9_-]/g, '');
+   const orderId = `GA${uuid}`.substring(0, 33);
+
+
+   //Only for Phonepe Payment
+   useEffect(() => {
+      let intervalIds: NodeJS.Timeout[] = [];
+      let timeoutIds: NodeJS.Timeout[] = [];
+      const saveData: CreateShipmentOrder = {
+         formData: formData,
+         cart: cart,
+         price: billTotal,
+         payment_mode: 'Pre-paid',
+         formDataGST: formDataGST,
+         orderId: orderId
+      };
+
+      const handleSuccess = async (result: any) => {
+         saveData.price = result.data.amount;
+         const createShipment = await createShipmentOrder(saveData);
+         if (createShipment.success) {
+            toast.success(<div>Order Placed Successfully! ☺ Your order will be dispatched soon. Use this <span className="text-green-600 font-semibold">{createShipment.waybill}</span> for track your order!</div>, {
+               duration: 30000,
+               closeButton: true,
+            });
+            toast.success(<div>Payment successful! ☺ We have received your payment of <span className="text-green-600 font-semibold">₹{result.data.amount}</span>! <br /> Payment ID: <span className="text-green-600 font-semibold">{orderId}</span></div>, {
+               duration: 20000,
+               closeButton: true,
+            });
+
+            clearCart();
+            setActiveComponent('SuccessPayment');
+            setStartStatusCheck(false);
+            setOpenPaymentGateway(false);
+            clearAllIntervalsAndTimeouts();
+         }
+      };
+
+      const checkPaymentStatus = async () => {
+         const result = await statusCheck(orderId);
+
+         if (result.data.state.toLowerCase() === "pending") {
+            scheduleStatusChecks();
+         } else {
+            handleSuccess(result);
+         }
+      };
+
+      const scheduleStatusChecks = () => {
+         const intervals = [
+            { delay: 20000, interval: 3000, count: 10 },
+            { delay: 50000, interval: 6000, count: 10 },
+            { delay: 110000, interval: 10000, count: 6 },
+            { delay: 170000, interval: 30000, count: 2 },
+            { delay: 230000, interval: 60000, count: 20 }
+         ];
+
+         intervals.forEach(({ delay, interval, count }) => {
+            const timeoutId = setTimeout(() => {
+               const intervalId = setInterval(async () => {
+                  const result = await statusCheck(orderId);
+                  if (result.success && result.data.state.toLowerCase() !== "pending") {
+                     clearInterval(intervalId);
+                     handleSuccess(result);
+                  } 
+                  if (!result.success && result.data.state === "FAILED") {
+                     toast.error(`Error checking payment status: ${result.message}`, {
+                        duration: 20000,
+                        closeButton: true,
+                     });
+                  }
+               }, interval);
+
+               intervalIds.push(intervalId);
+               const clearTimeoutId = setTimeout(() => clearInterval(intervalId), interval * count);
+               timeoutIds.push(clearTimeoutId);
+            }, delay);
+
+            timeoutIds.push(timeoutId);
+         });
+      };
+
+      const clearAllIntervalsAndTimeouts = () => {
+         intervalIds.forEach(clearInterval);
+         timeoutIds.forEach(clearTimeout);
+         intervalIds = [];
+         timeoutIds = [];
+      };
+
+      if (startStatusCheck) {
+         const initialTimeoutId = setTimeout(() => {
+            checkPaymentStatus();
+         }, 20000);
+         timeoutIds.push(initialTimeoutId);
+      } else {
+         clearAllIntervalsAndTimeouts();
+      }
+
+      return () => {
+         clearAllIntervalsAndTimeouts();
+      };
+   }, [startStatusCheck, orderId]);
+
+   // Status Check Ends Here
 
    const defaultFormData = {
       phone: '',
@@ -622,7 +729,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                 >
                   Place Order
                </Button>
-              {openPaymentGateway && ( <PaymentOptions billTotal={billTotal} user={user} formData={formData} formDataGST={formDataGST} cart={cart} setOpenPaymentGateway={setOpenPaymentGateway} setActiveComponent={setActiveComponent}/>)}
+              {openPaymentGateway && ( <PaymentOptions billTotal={billTotal} user={user} formData={formData} formDataGST={formDataGST} cart={cart} orderId={orderId} setStartStatusCheck={setStartStatusCheck} setOpenPaymentGateway={setOpenPaymentGateway} setActiveComponent={setActiveComponent}/>)}
 
                { openPaymentMode &&
                <div className="z-40 absolute -bottom-40">
