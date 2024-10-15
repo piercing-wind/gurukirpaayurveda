@@ -50,6 +50,8 @@ const PHONEPE_BASE_URL = 'https://api.phonepe.com/apis/hermes/pg/v1/pay';
                        .digest('hex') + `###${saltIndex}`;
       
     
+      console.log("Checksum", checksum);
+
       try {
         const response = await fetch(`${PHONEPE_BASE_URL}`, {
           method: 'POST',
