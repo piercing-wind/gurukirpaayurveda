@@ -18,7 +18,7 @@ export const PastOrder=({order}:{order : OrderWithShipping})=>{
       <div className=" px-8 w-[24rem] md:w-[24rem] border p-4 rounded-md border-gold shadow-md">
          <div className="flex flex-col justify-between items-baseline">
             <h2 className='flex items-center justify-between w-full'><span className='text-gold'>Tracking Id</span>{trackingNumber}</h2>
-            <h2 className='flex items-center justify-between w-full text-sm'><span className='text-gold'>Order Id</span>{order.order_id}</h2>
+            <h2 className='flex items-center justify-between w-full text-xs'><span className='text-gold'>Order Id</span>{order.order_id}</h2>
          </div>
          <div className="w-full border-t border-opacity-55 border-gold border-dotted my-2"/>
          <p className='text-xs font-medium'>Ordered Items</p>

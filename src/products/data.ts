@@ -28,11 +28,11 @@ export const products : Product[] = [
    {
       id: "7",
       name: "Hair Oil",
-      price: 1,
+      price: 400,
       image: "/product/top3Product/hair-oil-1x1.jpg",
       subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
       description: "Revitalize your hair naturally with our Ayurvedic hair care solutions, crafted to promote strength, shine, and healthy growth.",
-      discount: "0%",
+      discount: "30%",
       rating: 4.9,
       category: "Hair care",
       quantity : 1
@@ -61,30 +61,30 @@ export const products : Product[] = [
    //    category: "health",
    //    quantity : 1
    // },
-   // {
-   //    id: "10",
-   //    name: "Chyawanprash",
-   //    price: 1500,
-   //    image: "/product/Chyawanprash-1x1.jpg",
-   //    subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-   //    description: "Chyawanprash is a traditional herbal jam, packed with nutrients that enhance immunity, promote vitality, and support overall health.",
-   //    discount: "15%",
-   //    rating: 4.9,
-   //    category: "health",
-   //    quantity : 1
-   // },
-   // {
-   //    id: "10",
-   //    name: "Tulsi Acne Cream",
-   //    price: 700,
-   //    image: "/product/tulsi-acne-cream-1x1.jpg",
-   //    subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-   //    description: "Natural acne treatment that soothes, heals, and clears skin using the power of tulsi herb.",
-   //    discount: "15%",
-   //    rating: 4.9,
-   //    category: "Skin care",
-   //    quantity : 1
-   // },
+   {
+      id: "10",
+      name: "Chyawanprash",
+      price: 1500,
+      image: "/product/Chyawanprash-1x1.jpg",
+      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+      description: "Chyawanprash is a traditional herbal jam, packed with nutrients that enhance immunity, promote vitality, and support overall health.",
+      discount: "15%",
+      rating: 4.9,
+      category: "health",
+      quantity : 1
+   },
+   {
+      id: "10",
+      name: "Tulsi Acne Cream",
+      price: 700,
+      image: "/product/tulsi-acne-cream-1x1.jpg",
+      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+      description: "Natural acne treatment that soothes, heals, and clears skin using the power of tulsi herb.",
+      discount: "15%",
+      rating: 4.9,
+      category: "Skin care",
+      quantity : 1
+   },
    {
       id: "11",
       name: "Aloe Vera Gel",

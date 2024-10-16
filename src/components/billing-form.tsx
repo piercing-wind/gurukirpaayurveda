@@ -23,7 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Link from "next/link";
 import { CashPayment, MasterCard, OnlinePayment, UpiIcon, Visa } from "@/components/icons";
 import { Product } from "@/types/type";
-import { CreateOrder, CreateShipmentOrder, createShipmentOrder, successPayment, verifyPayment } from "@/actions/billing-form";
+import { CreateOrder, CreateShipmentOrder, createShipmentOrder, SuccessPayment, successPayment, verifyPayment } from "@/actions/billing-form";
 import { toast } from "sonner";
 import { ArrowLeftIcon, X } from "lucide-react";
 import { serviceAvailabilty } from "@/actions/delhivery";
@@ -35,7 +35,7 @@ import { Label } from "./ui/label";
 import { Checkbox } from "./ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { PaymentOptions } from "./paymentOptions";
-import { statusCheck } from "@/actions/phonepe";
+import { PaymentStatusResponse, statusCheck } from "@/actions/phonepe";
 
 type CountryOption = {
   value: string;
@@ -77,34 +77,54 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
    const uuid = uuidv4().replace(/[^a-zA-Z0-9_-]/g, '');
    const orderId = `GA${uuid}`.substring(0, 33);
 
-   const handleSuccess = async (result: any) => {
+   const handleSuccess = async (result: PaymentStatusResponse) => {
       const saveData: CreateShipmentOrder = {
          formData: formData,
          cart: cart,
-         price: billTotal,
+         price: billTotal / 100,
          payment_mode: 'Pre-paid',
          formDataGST: formDataGST,
          orderId: orderId
       };
+      const saveTransactionData : SuccessPayment ={
+         orderId: orderId,
+         paymentId: result.data.merchantTransactionId,
+         gateway_order_id: result.data.merchantTransactionId,
+         amount: result.data.amount / 100,
+         paymentGateway: 'PhonePe',
+         paymentStatus: result.data.state,
+         transactionDate: new Date(),
+         taxAndFees : 0,
+         webHookResponse: result
+      }
 
       saveData.price = result.data.amount;
-      const createShipment = await createShipmentOrder(saveData);
-      if (createShipment.success) {
-         toast.success(<div>Order Placed Successfully! ☺ Your order will be dispatched soon. Use this <span className="text-green-600 font-semibold">{createShipment.waybill}</span> for track your order!</div>, {
-            duration: 30000,
-            closeButton: true,
-         });
-         toast.success(<div>Payment successful! ☺ We have received your payment of <span className="text-green-600 font-semibold">₹{result.data.amount}</span>! <br /> Payment ID: <span className="text-green-600 font-semibold">{orderId}</span></div>, {
+      const saveTransaction = await successPayment(saveTransactionData);
+      if(saveTransaction){
+         toast.success(<div>Payment successful! ☺ We have received your payment of <span className="text-green-600 font-semibold">₹{result.data.amount / 100}</span>! <br /> Payment ID: <span className="text-green-600 font-semibold">{orderId}</span></div>, {
             duration: 20000,
             closeButton: true,
          });
-
-         clearCart();
-         setActiveComponent('SuccessPayment');
-         setStartStatusCheck(false);
-         setOpenPaymentGateway(false);
-         
+         toast.info("Creating your order... 🚚")
+         const createShipment = await createShipmentOrder(saveData);
+         if (createShipment.success) {
+            toast.success(<div>Order Placed Successfully! ☺ Your order will be dispatched soon. Use this <span className="text-green-600 font-semibold">{createShipment.waybill}</span> for track your order!</div>, {
+               duration: 30000,
+               closeButton: true,
+            });
+   
+            clearCart();
+            setActiveComponent('SuccessPayment');
+            setStartStatusCheck(false);
+            setOpenPaymentGateway(false);
+         }
+      }else{
+         toast.error('An error occurred while placing the order. Please try again or Contact Support.',{
+            duration: 20000,
+            closeButton: true,
+         });
       }
+
    };
 
    //Only for Phonepe Payment

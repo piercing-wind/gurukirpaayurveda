@@ -113,7 +113,7 @@ interface PaymentData {
   [key: string]: any; // Index signature to allow unknown fields
 }
 
-interface PaymentStatusResponse {
+export interface PaymentStatusResponse {
   success: boolean;
   code: string;
   message: string;

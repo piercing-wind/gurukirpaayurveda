@@ -1,6 +1,5 @@
 export const publicRoute = [
    '/',
-   '/shop',
    '/contact',
    '/new-verification',
    '/api/payment',
@@ -12,7 +11,7 @@ export const publicRoute = [
    '/api/auth',
    '/api/paypal',
    '/api/phonepe',
-   '/success'
+   'api/dump',
 ]
 
 
@@ -26,4 +25,4 @@ export const authRoute = [
 
 export const apiAuthRoute = '/api/auth'
 
-export const DEFAULT_LOGIN_REDIRECT = '/'
+export const DEFAULT_LOGIN_REDIRECT = '/shop'

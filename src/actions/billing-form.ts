@@ -212,14 +212,13 @@ export const createShipmentOrder = async ({ formData, cart, price, payment_mode,
     orderId = orderId;
   }
 
-//   const res = await createShipment(formData,orderId,user.name,payment_mode,cart,price,formDataGST );
+  const res = await createShipment(formData,orderId,user.name,payment_mode,cart,price,formDataGST );
 
-//   if (res.packages[0].status != "Success")
-//     throw new Error("Error in creating shipment");
-   const res = {}
+  if (res.packages[0].status != "Success")
+    throw new Error("Error in creating shipment");
 
-  const waybill = "Working";
-//   const orderStatus = await trackShipment(waybill);
+  const waybill = res.packages[0].waybill;
+  const orderStatus = await trackShipment(waybill);
 
   const dateOptions: Intl.DateTimeFormatOptions = {
     day: "numeric",
@@ -237,7 +236,7 @@ export const createShipmentOrder = async ({ formData, cart, price, payment_mode,
         order_id: orderId,
         carrier: "Delhivery",
         tracking_number_waybill: waybill,
-        shipping_status:"orderStatus?.ShipmentData?.[0]?.Shipment?.Status.Status",
+        shipping_status:orderStatus?.ShipmentData?.[0]?.Shipment?.Status.Status,
         delivery_charge: deliveryCharge,
         shipping_address: formData,
         estimated_delivery: new Date(),
@@ -265,12 +264,9 @@ export const createShipmentOrder = async ({ formData, cart, price, payment_mode,
   ]);
 
   const deliveryChargeInt = parseFloat(deliveryCharge);
-//   const transaction_date = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.PickUpDate);
-//   const expectedDeliveryDate = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.ExpectedDeliveryDate);
-//   const promisedDelivery = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.PromisedDeliveryDate);
-  const transaction_date = new Date();
-  const expectedDeliveryDate = new Date(new Date().setDate(new Date().getDate() + 7));
-  const promisedDelivery = new Date(new Date().setDate(new Date().getDate() + 7));
+  const transaction_date = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.PickUpDate);
+  const expectedDeliveryDate = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.ExpectedDeliveryDate);
+  const promisedDelivery = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.PromisedDeliveryDate);
   
   const data: OrderDetails = {
     orderId: orderId,

@@ -8,7 +8,9 @@ export default auth((req) => {
   const {nextUrl}  = req;
   const isLoggedIn = !!req.auth;
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthRoute);
-  const isPublicRoute = publicRoute.includes(nextUrl.pathname);
+  const isPublicRoute = publicRoute.some(route => 
+   nextUrl.pathname === route || nextUrl.pathname.startsWith('/api/phonepe') || nextUrl.pathname.startsWith('/api/dump')
+  );
   const isAuthRoute = authRoute.includes(nextUrl.pathname);
 
   //Do Not Change the order of the below id conditions. 

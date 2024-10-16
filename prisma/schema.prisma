@@ -108,7 +108,7 @@ model Shipping {
 
 model Transactions {
    id                   String   @id @default(uuid()) @map("_id")
-   order_id             String   
+   order_id             String   @unique
    userId               String
    payment_id           String   @unique
    gateway_order_id     String

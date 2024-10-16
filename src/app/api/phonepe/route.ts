@@ -1,9 +1,16 @@
 import { NextRequest } from 'next/server';
 import crypto from 'crypto';
 import { SuccessPayment, successPayment } from '@/actions/billing-form';
-
+import { getUserSession } from '@/actions/userSession';
+import { auth } from "@/auth"
+import { db } from '@/lib/db';
 
 const {PHONEPE_API_KEY} = process.env;
+
+export async function GET(req: NextRequest) {
+  return Response.redirect('https://vaidgurmeetsingh.com', 301);
+}
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -42,22 +49,27 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: 'Payment Failed', message: 'Payment failed' }, { status: 400 });
     }
 
-    const saveTransactionData : SuccessPayment = {
-         orderId: data.data.merchantTransactionId,
-         paymentId: data.data.transactionId,
-         gateway_order_id: data.data.transactionId,
-         amount: data.data.amount / 100,
-         paymentGateway: 'PhonePe',
-         paymentStatus: data.data.state,
-         transactionDate: new Date(),
-         taxAndFees: '0',
-         webHookResponse: data
-    }
-    const saveTransaction = await successPayment(saveTransactionData)
-
-   if(saveTransaction){
-      return Response.json({ response: 'ok', message: 'Action processed successfully' }, { status: 200 });
-   }
+    await db.transactions.upsert({
+      where: {
+         order_id: data.data.merchantTransactionId,
+      },
+      update: {
+         webHookResponse : JSON.stringify(data),
+      },
+      create: {
+        order_id: data.data.merchantTransactionId,
+        userId: data.data.merchantTransactionId,
+        payment_id: data.data.transactionId,
+        gateway_order_id: data.data.merchantTransactionId,
+        payment_status: data.data.state,
+        payment_method: 'PhonePe',
+        transaction_amount: data.data.amount / 100,
+        taxAndFees : 0,
+        currency: "INR",
+        transaction_date: new Date(),
+      },
+    });
+   
 
     return Response.json({ response: 'ok', message: 'Action processed successfully' }, { status: 200 });
   } catch (error) {
