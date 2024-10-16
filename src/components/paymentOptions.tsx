@@ -15,14 +15,14 @@ import PhonePePage from './phonepeModal';
 import { Button } from './ui/button';
 import { MasterCard, UpiIcon, Visa } from './icons';
 import { Landmark } from 'lucide-react';
-
+import { useCart } from '@/components/cartContext';
 
 export interface UserData {
   user: (User & { role: "ADMIN" | "USER"; }) | undefined;
 }
 
 const PayPalButton = ({billTotal, user,referenceId, formData, formDataGST, cart , setLoading,setOpenPaymentGateway,setActiveComponent}: {billTotal : number, user: UserData['user'], referenceId : string,formData: z.infer<typeof AddressSchema>,formDataGST: z.infer<typeof GST_IN> , cart :  Product[], setLoading : (v: boolean)=> void ,setOpenPaymentGateway: (v: boolean)=> void,setActiveComponent: (v: string)=> void}) => {
-
+   const {clearCart } = useCart();
    const amountToChargeInDollars = billTotal / parseFloat(process.env.NEXT_PUBLIC_EXCHANGE_RATE_FOR_DOLLAR ?? '84') ; // 1 USD = 84 INR Current Exchange Rate Today : 14 October 2024 
 
    const tax = (amountToChargeInDollars * 0.05) + 0.036 // 5% Transaction CHarges by PayPal and Rs 3 is the fixed transaction fee
@@ -80,8 +80,6 @@ const PayPalButton = ({billTotal, user,referenceId, formData, formDataGST, cart 
                const savePaymentRecord = await successPayment(sucessData);
 
                if(savePaymentRecord){
-                  setOpenPaymentGateway(false);
-                  setActiveComponent('SuccessPayment');
                   toast.success(<div> {(<span className='font-medium text-green-600'> Congratulations! </span>)} {details.payer?.name?.given_name}  Your payment was successful. Your order will be processed and shipped soon. Thank you for shopping with us. <br/>
                   Order ID: { referenceId }<br/>
                   Tracking ID: { createShipmentAndOrder.waybill }<br/>
@@ -90,6 +88,9 @@ const PayPalButton = ({billTotal, user,referenceId, formData, formDataGST, cart 
                     duration: 20000,
                     closeButton: true,
                   });
+                  setOpenPaymentGateway(false);
+                  setActiveComponent('SuccessPayment');
+                  clearCart();
               }
                
            } catch (error) {
@@ -135,7 +136,7 @@ const Phonepe =({billTotal, user, orderId, formData, setStartStatusCheck}:{ bill
 
    return (
       <div className='w-full px-1 h-full'>
-         <h5 className='text-sm'>Click below to continue</h5>
+         <h5 className='text-sm mb-2'>Click below to continue</h5>
          <Button className='bg-transparent border-2 hover:bg-opacity-40 hover:bg-goldLight border-gold flex items-center justify- w-full gap-x-6 px-4' onClick={()=>{setStartStatusCheck(true);setShowPhonepeModal(true)}}>
             <UpiIcon/>
             <MasterCard/>
@@ -166,8 +167,8 @@ export const PaymentOptions = ({billTotal, user, formData, setStartStatusCheck,f
    }
 
    return (
-      <div className="fixed h-screen w-full flex items-center justify-center top-0 left-0 z-50">
-      <div className={`w-96 relative border p-5 rounded-lg shadow-md m-auto max-h-[80vh] overflow-auto backdrop-blur-md flex flex-col gap-y-10 items-center ${CSS.scrollbar}`}>
+      <div className="fixed h-screen w-full flex items-end md:items-center justify-center top-0 left-0 z-50">
+      <div className={`w-96 relative border p-5 rounded-lg shadow-md mb-4 md:m-auto max-h-[80vh] overflow-auto backdrop-blur-md flex flex-col gap-y-10 items-center ${CSS.scrollbar}`}>
          <div className='flex items-center justify-between w-full px-1'>
             <h5 className='text-sm'>Please Select Your Payment Method</h5>
             <XIcon className=' cursor-pointer z-50' onClick={handleClose} />
@@ -179,8 +180,10 @@ export const PaymentOptions = ({billTotal, user, formData, setStartStatusCheck,f
             orderId={orderId}
             setStartStatusCheck={setStartStatusCheck}
          />
-         <div className='w-[80%] mx-auto border-b-2 border-dashed border-gold'/>
+         <div className='w-[80%] mx-auto border-t-2 border-dashed border-gold pt-4 flex flex-col items-center'>
          <p className='text-xs'>User&apos;s Outside the India Please use PayPal</p>
+         <p className='text-xs'>Transaction Charges May Apply!</p>
+         </div>
         {loading ? (
           <span className='absolute left-0 top-0 flex items-center justify-center z-50 backdrop-blur-sm h-full w-full'>
             <MoonLoader color="#b88e2f" loading className='m-5' />

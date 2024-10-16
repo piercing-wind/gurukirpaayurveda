@@ -25,18 +25,18 @@ export const products : Product[] = [
       category: "sexual wellness",
       quantity : 1
    },
-   // {
-   //    id: "7",
-   //    name: "Hair Oil",
-   //    price: 1,
-   //    image: "/product/top3Product/hair-oil-1x1.jpg",
-   //    subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
-   //    description: "Revitalize your hair naturally with our Ayurvedic hair care solutions, crafted to promote strength, shine, and healthy growth.",
-   //    discount: "0%",
-   //    rating: 4.9,
-   //    category: "Hair care",
-   //    quantity : 1
-   // },
+   {
+      id: "7",
+      name: "Hair Oil",
+      price: 1,
+      image: "/product/top3Product/hair-oil-1x1.jpg",
+      subImages: ["/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg", "/product/shilajit-gold-resin.jpg"],
+      description: "Revitalize your hair naturally with our Ayurvedic hair care solutions, crafted to promote strength, shine, and healthy growth.",
+      discount: "0%",
+      rating: 4.9,
+      category: "Hair care",
+      quantity : 1
+   },
    // {
    //    id: "8",
    //    name: "Ashwagandha Powder",

@@ -63,7 +63,7 @@ export const CheckoutPageContent = () => {
    return(
       <section className="w-full relative">
          {startStatusCheck &&
-            <div className="fixed top-10 left-5 p-4 flex flex-col items-center h-32 w-80 bg-white shadow-lg rounded-md border-2 border-gold z-20">
+            <div className="fixed top-5 md:top-10 left-3 md:left-5 p-4 flex flex-col items-center h-32 w-[94%] md:w-80 bg-white shadow-lg rounded-md border-2 border-gold z-20">
                <h6 className="font-semibold text-lg mb-2 flex items-end justify-between">Fetching Payment Status <PulseLoader className="mb-2" size={5} loading color="#b88e2f" /></h6>
                <p>Please do not <span className="font-semibold text-gold text-md">refresh</span> the page or go back.</p>
                <span className="absolute right-4 bottom-1"><ClipLoader loading color="#b88e2f"/></span>

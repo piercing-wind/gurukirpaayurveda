@@ -77,11 +77,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
    const uuid = uuidv4().replace(/[^a-zA-Z0-9_-]/g, '');
    const orderId = `GA${uuid}`.substring(0, 33);
 
-
-   //Only for Phonepe Payment
-   useEffect(() => {
-      let intervalIds: NodeJS.Timeout[] = [];
-      let timeoutIds: NodeJS.Timeout[] = [];
+   const handleSuccess = async (result: any) => {
       const saveData: CreateShipmentOrder = {
          formData: formData,
          cart: cart,
@@ -91,34 +87,39 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
          orderId: orderId
       };
 
-      const handleSuccess = async (result: any) => {
-         saveData.price = result.data.amount;
-         const createShipment = await createShipmentOrder(saveData);
-         if (createShipment.success) {
-            toast.success(<div>Order Placed Successfully! ☺ Your order will be dispatched soon. Use this <span className="text-green-600 font-semibold">{createShipment.waybill}</span> for track your order!</div>, {
-               duration: 30000,
-               closeButton: true,
-            });
-            toast.success(<div>Payment successful! ☺ We have received your payment of <span className="text-green-600 font-semibold">₹{result.data.amount}</span>! <br /> Payment ID: <span className="text-green-600 font-semibold">{orderId}</span></div>, {
-               duration: 20000,
-               closeButton: true,
-            });
+      saveData.price = result.data.amount;
+      const createShipment = await createShipmentOrder(saveData);
+      if (createShipment.success) {
+         toast.success(<div>Order Placed Successfully! ☺ Your order will be dispatched soon. Use this <span className="text-green-600 font-semibold">{createShipment.waybill}</span> for track your order!</div>, {
+            duration: 30000,
+            closeButton: true,
+         });
+         toast.success(<div>Payment successful! ☺ We have received your payment of <span className="text-green-600 font-semibold">₹{result.data.amount}</span>! <br /> Payment ID: <span className="text-green-600 font-semibold">{orderId}</span></div>, {
+            duration: 20000,
+            closeButton: true,
+         });
 
-            clearCart();
-            setActiveComponent('SuccessPayment');
-            setStartStatusCheck(false);
-            setOpenPaymentGateway(false);
-            clearAllIntervalsAndTimeouts();
-         }
-      };
+         clearCart();
+         setActiveComponent('SuccessPayment');
+         setStartStatusCheck(false);
+         setOpenPaymentGateway(false);
+         
+      }
+   };
+
+   //Only for Phonepe Payment
+   useEffect(() => {
+      let intervalIds: NodeJS.Timeout[] = [];
+      let timeoutIds: NodeJS.Timeout[] = [];
 
       const checkPaymentStatus = async () => {
          const result = await statusCheck(orderId);
 
          if (result.data.state.toLowerCase() === "pending") {
             scheduleStatusChecks();
-         } else {
+         } else if(result.data.state === "SUCCESS") {
             handleSuccess(result);
+            clearAllIntervalsAndTimeouts();
          }
       };
 
@@ -136,8 +137,11 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                const intervalId = setInterval(async () => {
                   const result = await statusCheck(orderId);
                   if (result.success && result.data.state.toLowerCase() !== "pending") {
+                     if(result.data.state === "SUCCESS"){
                      clearInterval(intervalId);
                      handleSuccess(result);
+                     clearAllIntervalsAndTimeouts();
+                   }
                   } 
                   if (!result.success && result.data.state === "FAILED") {
                      toast.error(`Error checking payment status: ${result.message}`, {
@@ -773,7 +777,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                      * Cash on Delivery will charge{" "}
                      <span className="text-red-600 font-medium">Rs. 70</span> extra.
                    </p>
-                   <span className="text-xs flex items-center">Bill Total With cash : &nbsp;<span className="text-gold font-semibold"> ₹ {billTotal + parseFloat(transportationCharge)} /-</span></span>
+                   <span className="text-xs flex items-center">Bill Total With cash : &nbsp;<span className="text-gold font-semibold"> ₹ {(billTotal + parseFloat(transportationCharge)).toFixed(2)} /-</span></span>
                  </motion.div>
                </motion.div>
                </div>
