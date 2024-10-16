@@ -79,34 +79,47 @@ const PHONEPE_BASE_URL = 'https://api.phonepe.com/apis/hermes/pg/v1';
     };
 
 
-    interface PaymentInstrument {
-      type: string;
-      utr: string | null;
-      cardNetwork: string | null;
-      accountType: string;
-    }
-    
-    interface FeesContext {
-      amount: number;
-    }
-    
-    interface PaymentData {
-      merchantId: string;
-      merchantTransactionId: string;
-      transactionId: string;
-      amount: number;
-      state: string;
-      responseCode: string;
-      paymentInstrument: PaymentInstrument;
-      feesContext: FeesContext;
-    }
-    
-    interface PaymentStatusResponse {
-      success: boolean;
-      code: string;
-      message: string;
-      data: PaymentData;
-    }
+   interface PaymentInstrument {
+  type: string;
+  utr?: string;
+  cardNetwork?: string;
+  accountType?: string;
+  cardType?: string;
+  pgTransactionId?: string;
+  bankTransactionId?: string;
+  pgAuthorizationCode?: string;
+  arn?: string;
+  bankId?: string;
+  brn?: string;
+  pgServiceTransactionId?: string;
+  [key: string]: any; // Index signature to allow unknown fields
+}
+
+interface FeesContext {
+  amount: number;
+  [key: string]: any; // Index signature to allow unknown fields
+}
+
+interface PaymentData {
+  merchantId: string;
+  merchantTransactionId: string;
+  transactionId: string;
+  amount: number;
+  state: string;
+  responseCode: string;
+  responseCodeDescription?: string;
+  paymentInstrument: PaymentInstrument | null;
+  feesContext?: FeesContext;
+  [key: string]: any; // Index signature to allow unknown fields
+}
+
+interface PaymentStatusResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: PaymentData;
+  [key: string]: any; // Index signature to allow unknown fields
+}
 export const statusCheck = async (orderId: string): Promise<PaymentStatusResponse> => {
 
    const endpoint = `/pg/v1/status/${PHONEPE_MERCHANT_ID}/${orderId}`;

@@ -117,7 +117,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
 
          if (result.data.state.toLowerCase() === "pending") {
             scheduleStatusChecks();
-         } else if(result.data.state === "SUCCESS") {
+         } else if(result.data.state === "COMPLETED") {
             handleSuccess(result);
             clearAllIntervalsAndTimeouts();
          }
@@ -137,7 +137,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                const intervalId = setInterval(async () => {
                   const result = await statusCheck(orderId);
                   if (result.success && result.data.state.toLowerCase() !== "pending") {
-                     if(result.data.state === "SUCCESS"){
+                     if(result.data.state === "COMPLETED"){
                      clearInterval(intervalId);
                      handleSuccess(result);
                      clearAllIntervalsAndTimeouts();
