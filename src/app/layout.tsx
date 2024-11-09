@@ -5,8 +5,12 @@ import { CartProvider } from "@/components/cartContext";
 import { Toaster } from "@/components/ui/sonner"
 import Link from "next/link";
 import { WhatsAppGreen } from "@/components/icons";
-import Head from "next/head";
 import Script from 'next/script'
+// import useRedirectToChrome from "@/components/redirectBrowser"; 
+import dynamic from "next/dynamic";
+
+const RedirectWrapper = dynamic(() => import('@/components/redirectBrowser'), { ssr: false });
+
 const poppins = localFont({
    src: [
       {
@@ -156,6 +160,7 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} antialiased relative`}
         >
+       <RedirectWrapper />
        <CartProvider >
         {children}
        </CartProvider>
