@@ -69,10 +69,6 @@ export const CheckoutPageContent = () => {
 
    let billTotalWithCash = TotalAfterDiscount + transportationCharge;
     
-    console.log("Total", Total);
-   console.log("TotalAfterDiscount", TotalAfterDiscount);
-   console.log("TotalSavings", TotalSavings);
-
 
    return(
       <section className="w-full relative">
