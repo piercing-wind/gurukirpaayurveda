@@ -5,9 +5,6 @@ import { LoginSchema } from "@/schemas";
 import type { NextAuthConfig } from "next-auth";
 import { getUserbyEmail } from "@/data/user";
 
-// console.log(process.env.GOOGLE_CLIENT_ID);
-// console.log(process.env.GOOGLE_CLIENT_SECRET);
-
 export default {
   providers: [
     Credentials({

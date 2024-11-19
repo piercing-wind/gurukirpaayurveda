@@ -1,18 +1,14 @@
 "use server";
 import { AddressSchema, GST_IN } from "@/schemas";
 import * as z from "zod";
-import Razorpay from "razorpay";
-import { getUserSession } from "@/actions/userSession";
+// import Razorpay from "razorpay";
+// import { getUserSession } from "@/actions/userSession";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "@/lib/db";
 import { Product } from "@/types/type";
 import { createHmac } from "crypto";
 import { createShipment, trackShipment } from "./delhivery";
 import { OrderDetails, sendBill } from "@/lib/mail";
-import { PayPalButtonsComponentProps } from "@paypal/react-paypal-js";
-import type { CreateOrderActions } from "@paypal/paypal-js";
-import { UserData } from "@/components/paymentOptions";
-import { User } from 'next-auth';
 
 const PAYPAL_API = process.env.NEXT_PUBLIC_PAYPAL_API_URL!;
 const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID!;
@@ -44,9 +40,10 @@ export type CreatePaypalOrder = {
   currency: string;
   accessToken: string;
   referenceId: string;
+  userPhone : string;
 };
 
-export const createPaypalOrder = async ({ amount, currency, accessToken, referenceId,}: CreatePaypalOrder, user : UserData['user']) => {
+export const createPaypalOrder = async ({ amount, currency, accessToken, referenceId, userPhone}: CreatePaypalOrder) => {
   try {
     const response = await fetch(`${PAYPAL_API}/v2/checkout/orders`, {
       method: "POST",
@@ -78,7 +75,7 @@ export const createPaypalOrder = async ({ amount, currency, accessToken, referen
           },
         },
         application_context: {
-          userId : user?.id,
+          userId : userPhone,
         }
       }),
     });
@@ -112,13 +109,12 @@ export type CreateOrder = {
    currency: string;
    payment_method : string;
    order_date : Date;
-   user : UserData['user']
 }
 
-// export const createOrder = async ({amount, data, cart, paymentId , orderId,payment_method,order_date, user, currency = "INR" }:CreateOrder): Promise<boolean> => {
+// export const createOrder = async ({amount, data, cart, paymentId , orderId,payment_method,order_date, currency = "INR" }:CreateOrder): Promise<boolean> => {
 //   //amount is in dollars
 
-//   if (!user) throw new Error("User not authenticated");
+// //   if (!user) throw new Error("User not authenticated");
 //   const validatedData = AddressSchema.safeParse(data);
 //   if (!validatedData.success) throw new Error("Invalid data");
 
@@ -147,6 +143,7 @@ export type CreateOrder = {
 // };
 
 export type SuccessPayment = {
+   userName : string
    orderId: string;
    paymentId: string;
    gateway_order_id: string;
@@ -158,26 +155,19 @@ export type SuccessPayment = {
    webHookResponse ?: unknown
 }
 
-export const successPayment = async ({ orderId, paymentId, gateway_order_id, amount, paymentGateway, paymentStatus, transactionDate,taxAndFees, webHookResponse}:SuccessPayment) => {
-  const user = await getUserSession();
-  if (!user) throw new Error("User not authenticated");
+export const successPayment = async ({ orderId, paymentId, gateway_order_id, amount, paymentGateway, paymentStatus, transactionDate,taxAndFees, userName, webHookResponse}:SuccessPayment) => {
+
   try {
-    await db.transactions.upsert({
-      where: {
-         payment_id: paymentId,
-      },
-      update: {
-        userId: user?.id!,
-      },
-      create: {
+   await db.transactions.create({
+      data: {
         order_id: orderId,
-        userId: user?.id!,
+        userId : userName,
         payment_id: paymentId,
         gateway_order_id: gateway_order_id,
         payment_status: paymentStatus,
         payment_method: paymentGateway,
         transaction_amount: parseFloat(amount as string),
-        taxAndFees : parseFloat(taxAndFees as string),
+        taxAndFees: parseFloat(taxAndFees as string),
         currency: "INR",
         transaction_date: transactionDate,
       },
@@ -202,8 +192,6 @@ export type CreateShipmentOrder ={
 }
 
 export const createShipmentOrder = async ({ formData, cart, price, payment_mode, formDataGST, deliveryCharge = '0', orderId, gateway_order_id = ""}: CreateShipmentOrder) => {
-  const user = await getUserSession();
-  if (!user) throw new Error("User not authenticated");
 
   if (!orderId) {
     const order_id = uuidv4().replace("-", "");
@@ -212,7 +200,7 @@ export const createShipmentOrder = async ({ formData, cart, price, payment_mode,
     orderId = orderId;
   }
 
-  const res = await createShipment(formData,orderId,user.name,payment_mode,cart,price,formDataGST );
+  const res = await createShipment(formData,orderId,formData.name,payment_mode,cart,price,formDataGST );
 
   if (res.packages[0].status != "Success")
     throw new Error("Error in creating shipment");
@@ -220,15 +208,15 @@ export const createShipmentOrder = async ({ formData, cart, price, payment_mode,
   const waybill = res.packages[0].waybill;
   const orderStatus = await trackShipment(waybill);
 
-  const dateOptions: Intl.DateTimeFormatOptions = {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: true,
-  };
+//   const dateOptions: Intl.DateTimeFormatOptions = {
+//     day: "numeric",
+//     month: "long",
+//     year: "numeric",
+//     hour: "numeric",
+//     minute: "numeric",
+//     second: "numeric",
+//     hour12: true,
+//   };
 
   await db.$transaction([
     db.shipping.create({
@@ -249,7 +237,7 @@ export const createShipmentOrder = async ({ formData, cart, price, payment_mode,
       update: {}, // No update operation needed, proceed further if order_id exists
       create: {
         order_id: orderId,
-        userId: user?.id!,
+        userId: formData.name,
         gateway_order_id: gateway_order_id != "" ? gateway_order_id : `${orderId}`,
         order_status: "Order Created",
         total_price: price,
@@ -263,27 +251,27 @@ export const createShipmentOrder = async ({ formData, cart, price, payment_mode,
     }),
   ]);
 
-  const deliveryChargeInt = parseFloat(deliveryCharge);
-  const transaction_date = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.PickUpDate);
-  const expectedDeliveryDate = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.ExpectedDeliveryDate);
-  const promisedDelivery = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.PromisedDeliveryDate);
+//   const deliveryChargeInt = parseFloat(deliveryCharge);
+//   const transaction_date = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.PickUpDate);
+//   const expectedDeliveryDate = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.ExpectedDeliveryDate);
+//   const promisedDelivery = new Date(orderStatus?.ShipmentData?.[0]?.Shipment?.PromisedDeliveryDate);
   
-  const data: OrderDetails = {
-    orderId: orderId,
-    name: user.name,
-    userEmail: user.email,
-    userGST: formDataGST.gst_in,
-    address: formData.address + " " + formData.city + " " + formData.state + " " + formData.zip,
-    price: price,
-    waybill: waybill,
-    products: cart,
-    paymentMode: payment_mode,
-    deliveryCharge: deliveryChargeInt,
-    transaction_date: transaction_date.toLocaleString("en-US", dateOptions).replace(",", " on"),
-    expectedDelivery: expectedDeliveryDate.toLocaleString("en-US", dateOptions).replace(",", " on"),
-    promisedDelivery: promisedDelivery.toLocaleString("en-US", dateOptions).replace(",", " on"),
-  };
+//   const data: OrderDetails = {
+//     orderId: orderId,
+//     name: formData.name,
+//     userEmail: formData.phone,
+//     userGST: formDataGST.gst_in,
+//     address: formData.address + " " + formData.city + " " + formData.state + " " + formData.zip,
+//     price: price,
+//     waybill: waybill,
+//     products: cart,
+//     paymentMode: payment_mode,
+//     deliveryCharge: deliveryChargeInt,
+//     transaction_date: transaction_date.toLocaleString("en-US", dateOptions).replace(",", " on"),
+//     expectedDelivery: expectedDeliveryDate.toLocaleString("en-US", dateOptions).replace(",", " on"),
+//     promisedDelivery: promisedDelivery.toLocaleString("en-US", dateOptions).replace(",", " on"),
+//   };
 
-  await sendBill(data); //mail to user
+//   await sendBill(data); //mail to user
   return { success: true, waybill: waybill };
 };

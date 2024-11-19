@@ -36,6 +36,7 @@ import { Checkbox } from "./ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { PaymentOptions } from "./paymentOptions";
 import { PaymentStatusResponse, statusCheck } from "@/actions/phonepe";
+import { SendOTP } from "@/actions/awspinpointsms";
 
 type CountryOption = {
   value: string;
@@ -72,8 +73,10 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
    const [submitedGST, setSubmitedGST] = useState<boolean>(false);
    const [diliveryAvailable, setDiliveryAvailable] = useState<boolean>(false);
    const [showGSTInput, setShowGSTInput] = useState<string>('IN');
+   const [otpVerification, setOtpVerification] = useState<boolean>(false);
    // Opens the payment gateway
    const [openPaymentGateway, setOpenPaymentGateway] = useState<boolean>(false);
+   const [userName, setUserName] = useState<string>('');
    const uuid = uuidv4().replace(/[^a-zA-Z0-9_-]/g, '');
    const orderId = `GA${uuid}`.substring(0, 33);
 
@@ -87,6 +90,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
          orderId: orderId
       };
       const saveTransactionData : SuccessPayment ={
+         userName : userName,
          orderId: orderId,
          paymentId: result.data.merchantTransactionId,
          gateway_order_id: result.data.merchantTransactionId,
@@ -109,7 +113,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
          const createShipment = await createShipmentOrder(saveData);
          if (createShipment.success) {
             toast.success(<div>Order Placed Successfully! ☺ Your order will be dispatched soon. Use this <span className="text-green-600 font-semibold">{createShipment.waybill}</span> for track your order!</div>, {
-               duration: 30000,
+               duration: 60000,
                closeButton: true,
             });
    
@@ -204,6 +208,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
    // Status Check Ends Here
 
    const defaultFormData = {
+      name : "",
       phone: '',
       country: 'India',
       address: '',
@@ -211,12 +216,12 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
       city: '',
       zip: '',
       otherInformation: '',
-      businesName: user?.name || '',
+      businesName: '',
       gst_in: '',
       pan: ''
     } 
    const defaultFormDataForGST = {
-      businesName: user?.name || '',
+      businesName: '',
       gst_in: '',
       pan: ''
     } 
@@ -257,132 +262,10 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
          });
          return;
       }
-      // toast.error(
-      //    'Online Payments are coming soon! Please use Cash on Delivery for now.',
-      // )
+
       setOpenPaymentGateway(true);
       return;
 
-
-      // try {
-      
-      //    const order : RazorpayOrder = await createOrder(amountToCharge, formData, cart);
-   
-      //    const options = {
-      //       key_id : process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-      //       amount : order?.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-      //       currency : order?.currency,
-      //       name : "Gurukirpa Ayurveda",
-      //       description : description,
-      //       image : `https://${process.env.NEXT_PUBLIC_WEBSITE_URL}/logo.png"`, 
-      //       order_id : order?.id,
-      //       // redirect : true,
-      //       callback_url : "https://eneqd3r9zrjok.x.pipedream.net/",
-      //       prefill : { 
-      //           "name": order?.notes.name, 
-      //           "email": order?.notes.email,
-      //           "contact": form.getValues('phone') 
-      //       },
-      //       notes : {
-      //           "name": "Gurukirpa Ayurveda",
-      //           "userId": order?.notes.userId
-      //       },
-      //       theme : {
-      //           "color": "#B88E2F"
-      //       },
-      //       send_sms_hash : true,
-      //       app_name : "Gurukirpa Ayurveda",
-      //       modal: {
-      //          ondismiss: function () {
-      //            // Handle the case where the user exits the payment page without paying
-      //            toast.error('Payment was not completed. Please try again.', {
-      //              duration: 20000,
-      //              closeButton: true,
-      //            });
-      //            setIsPending(false);
-      //            setDisablePayement(false);
-      //            setIsPending(false);
-      //          }
-      //        },
-      //       handler: function (response : any) {
-      //          // Payment success    
-      //          const verification = verifyPayment(response.razorpay_payment_id, order.id, response.razorpay_signature)
-      //          if(!verification){
-      //             toast.error('Payment verification failed! Please contact support',{
-      //                duration: 20000,
-      //                closeButton: true,
-      //             });
-      //             return;
-      //          }
-      //          startTransition(() => {
-      //             successPayment(order.id, response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature, order.amount).then((response)=>{
-                  
-      //                if(response.status === 'captured'){
-      //                   createShipmentOrder(formData, cart, billTotal, 'Pre-paid',formDataGST, '0',response.orderId).then((response)=>{
-
-      //                      if(response.success){
-      //                         toast.success(`Order Placed Successfully! Your order will be dispatched soon. Use this ${response.waybill} for track your order!`,{
-      //                            duration: 30000,
-      //                            closeButton: true,
-      //                         });
-      //                         clearCart();
-      //                         setActiveComponent('SuccessPayment');
-      //                      }else{
-      //                         toast.error('An error occurred while placing the order. Please try again later.',{
-      //                            duration: 20000,
-      //                            closeButton: true,
-      //                         });
-      //                      }
-                           
-      //                   }).catch((error)=>{
-      //                      toast.error(`An error occurred: ${(error as Error).message}`,{
-      //                         duration: 20000,
-      //                         closeButton: true,
-      //                      });
-      //                      console.log(error);
-      //                   });
-                        
-      //                }
-      //             clearCart();
-      //             setActiveComponent('SuccessPayment');
-      //             }).catch((error) => {
-      //                console.error(error);
-      //                throw new Error(`${(error as Error).message} Error in creating order`);
-      //              });
-      //          });
-     
-      //          toast.success(`Payment successful! Payment ID: ${response.razorpay_payment_id}`,{
-      //             duration: 20000,
-      //             closeButton: true,
-      //          });
-               
-      //        },
-      //    };
-      //    if (typeof window !== "undefined") {
-      //       // Client-side-only code
-      //       const rzp = new (window as any).Razorpay(options);
-      //       rzp.open();
-      //       rzp.on('payment.failed', function (response : any) {
-      //          // Payment failed
-      //          toast.error(`Payment failed! Reason: ${response.error.description}`,{
-      //             duration: 20000,
-      //             closeButton: true,
-      //          });
-      //          console.log('Payment failed:', response);
-      //        })
-        
-      //    }
-   
-      //    } catch (error) {
-      //       console.error(error);
-      //       toast.error(`An error occurred: ${(error as Error).message}`,{
-      //          duration: 20000,
-      //          closeButton: true,
-      //       });
-            
-      //    }finally{
-      //       setIsPending(false);
-      //    }
    }
 
    const cashOnDelivery = async () => {
@@ -445,6 +328,8 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
       setIsPending(true);
       setDisablePayement(true);
       setSubmitedGST(true);
+      setUserName(data.name);
+      console.log(data);
       if(submitedGST) return;
       try{
          const res = await serviceAvailabilty(data.zip);
@@ -514,47 +399,68 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                  className="flex flex-col space-y-4 p-2"
                  >
                   <div className="flex flex-col gap-2 mx-4 ">
-                 
-                   <FormField
-                     control={form.control}
-                     name="phone"
-                     render={({ field }) => (
-                        <FormItem>
-                           <FormLabel className='font-medium text-sm'>
-                              Phone Number <span className='text-red-500'>*</span>
-                           </FormLabel>
-                           <FormControl>
-                              <Controller
-                                 control={form.control}
-                                 name="phone"
-                                 render={({ field }) => (
-                                    <PhoneInput
-                                       country={'in'}  // Default country code
-                                       enableSearch
-                                       value={field.value}
-                                       onChange={field.onChange} // Hook up with form controller
-                                       inputProps={{
-                                          name: 'phone',
-                                          required: true,
-                                       }}
-                                       disabled={isPending || loading}
-                                       dropdownClass="bg-white border border-gold w-full rounded-md" 
-                                       containerClass="w-full border border-gold rounded-md"
-                                       inputClass="w-full bg-white p-2 text-xs rounded-md focus:ring-2 focus:ring-gold border-none" 
-                                       inputStyle={{
-                                          width: '100%',
-                                          backgroundColor: 'white',
-                                          border: '#B88E2F',
-                                          outline: 'none',
-                                        }}
-                                    />
-                                 )}
-                              />
-                           </FormControl>
-                           <FormMessage>{form.formState.errors.phone?.message}</FormMessage>
-                        </FormItem>
-                     )}
-                  />
+                        <FormField 
+                            control={form.control}
+                            name="name"
+                            render={({field})=>(
+                               <FormItem>
+                                  <FormLabel className='font-medium text-sm'>Name <span className='text-red-500'>*</span></FormLabel>
+                                  <FormControl>
+                                     <Input 
+                                     {...field}
+                                     placeholder='name'
+                                     type='text'
+                                     disabled={isPending || loading}
+                                     className='border border-gold rounded-md text-xs p-2 w-full active:outline-none focus:outline-none focus:ring-2 focus:ring-gold '
+                                     />
+                                  </FormControl>
+                                  <FormMessage>{form.formState.errors.name?.message}</FormMessage>
+                               </FormItem>
+                            )}
+                         />
+                     {/* <div className="flex items-end gap-2 justify-between w-full"> */}
+                         <FormField
+                            control={form.control}
+                            name="phone"
+                            render={({ field }) => (
+                               <FormItem>
+                                  <FormLabel className='font-medium text-sm'>
+                                     Phone Number <span className='text-red-500'>*</span>
+                                  </FormLabel>
+                                  <FormControl>
+                                     <Controller
+                                        control={form.control}
+                                        name="phone"
+                                        render={({ field }) => (
+                                           <PhoneInput
+                                              country={'in'}  // Default country code
+                                              enableSearch
+                                              value={field.value}
+                                              onChange={field.onChange} // Hook up with form controller
+                                              inputProps={{
+                                                 name: 'phone',
+                                                 required: true,
+                                              }}
+                                              disabled={isPending || loading}
+                                              dropdownClass="bg-white border border-gold w-full rounded-md" 
+                                              containerClass="w-full border border-gold rounded-md"
+                                              inputClass="w-full bg-white p-2 text-xs rounded-md focus:ring-2 focus:ring-gold border-none" 
+                                              inputStyle={{
+                                                 width: '100%',
+                                                 backgroundColor: 'white',
+                                                 border: '#B88E2F',
+                                                 outline: 'none',
+                                              }}
+                                           />
+                                        )}
+                                     />
+                                  </FormControl>
+                                  <FormMessage>{form.formState.errors.phone?.message}</FormMessage>
+                               </FormItem>
+                            )}
+                         />
+                         {/* <div onClick={()=>SendOTP()} className=" w-[9rem] h-[2.3rem] px-2">Verify</div>
+                     </div> */}
                   <FormField 
                      control={form.control}
                      name="country"
@@ -753,7 +659,7 @@ export const BillingForm :React.FC<BillingFormProps> = ({cart, Total, TotalSavin
                 >
                   Place Order
                </Button>
-              {openPaymentGateway && ( <PaymentOptions billTotal={billTotal} user={user} formData={formData} formDataGST={formDataGST} cart={cart} orderId={orderId} setStartStatusCheck={setStartStatusCheck} setOpenPaymentGateway={setOpenPaymentGateway} setActiveComponent={setActiveComponent}/>)}
+              {openPaymentGateway && ( <PaymentOptions billTotal={billTotal} formData={formData} formDataGST={formDataGST} cart={cart} orderId={orderId} setStartStatusCheck={setStartStatusCheck} setOpenPaymentGateway={setOpenPaymentGateway} setActiveComponent={setActiveComponent}/>)}
 
                { openPaymentMode &&
                <div className="z-40 absolute -bottom-40">

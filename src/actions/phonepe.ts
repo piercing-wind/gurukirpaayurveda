@@ -20,7 +20,7 @@ const PHONEPE_BASE_URL = 'https://api.phonepe.com/apis/hermes/pg/v1';
    mobileNumber?: string;
  }
  
- export const initiatePayment = async (amount: number, orderId: string, userId: string, mobileNumber: string, callbackUrl: string): Promise<string> => {
+ export const initiatePayment = async (amount: number, orderId: string, phone: string, mobileNumber: string, callbackUrl: string): Promise<string> => {
       if (!PHONEPE_API_KEY) {
         throw new Error('PHONEPE_API_KEY is not defined');
       }
@@ -28,7 +28,7 @@ const PHONEPE_BASE_URL = 'https://api.phonepe.com/apis/hermes/pg/v1';
       const payload: PaymentPayload = {
         merchantId: PHONEPE_MERCHANT_ID,
         merchantTransactionId: orderId,
-        merchantUserId: userId,
+        merchantUserId: phone,
         amount: amount * 100, // Amount in paise
         redirectUrl: 'https://vaidgurmeetsingh.com/api/dump',
         redirectMode: 'POST',

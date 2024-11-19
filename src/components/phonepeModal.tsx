@@ -1,20 +1,18 @@
 'use client'
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { initiatePayment } from '@/actions/phonepe';
-import { UserData } from './paymentOptions';
 import * as z from 'zod';
 import { AddressSchema } from '@/schemas';
 import { toast } from "sonner";
 
-const PhonePePage = ({amount, orderId, user, formData}:{ amount : number, orderId : string,  user: UserData['user'], formData : z.infer<typeof AddressSchema>}) => {
+const PhonePePage = ({amount, orderId, formData}:{ amount : number, orderId : string, formData : z.infer<typeof AddressSchema>}) => {
   const [paymentUrl, setPaymentUrl] = useState('');
   const [opned, setOpened] = useState(false);
 
   const handlePayment = async () => {
    if(opned) return;
 
-    const url = await initiatePayment(amount, orderId,user?.id!, formData.phone, "https://vaidgurmeetsingh.com/api/phonepe");
+    const url = await initiatePayment(amount, orderId, formData.phone, formData.phone, "https://vaidgurmeetsingh.com/api/phonepe");
 
     if (url) {
       setPaymentUrl(url);

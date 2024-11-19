@@ -2,6 +2,7 @@ import { CheckoutPageContent } from "@/components/checkoutPageContent";
 import { Footer } from "@/components/footer";
 import { HeaderWithSessionProvider } from "@/components/headerWithSessionProvider";
 import { ChevronRight } from "lucide-react";
+import { SessionProvider } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -25,7 +26,9 @@ const CheckoutPage = () => {
                <p className="text-sm flex items-center"><Link href='/'>Home </Link><ChevronRight size={18}/> Checkout</p>
             </div>
          </div>
-            <CheckoutPageContent />
+               <SessionProvider>
+                  <CheckoutPageContent />
+               </SessionProvider>
          </section>
          <Footer/>
       </main>

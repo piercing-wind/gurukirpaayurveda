@@ -4,16 +4,18 @@ import { BillingForm } from "./billing-form";
 import { useCart } from '@/components/cartContext';
 import { useEffect, useState } from 'react';
 import { SuccessPayment } from "./successPayment";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider, useSession } from "next-auth/react";
 import { SuccessCODOrderCreation } from "./successCODOrderCreation";
 import ClipLoader from 'react-spinners/ClipLoader';
 import PulseLoader from 'react-spinners/PulseLoader';
+import Link from "next/link";
 
 export const CheckoutPageContent = () => {
    const { cart, updateCartItemQuantity, removeFromCart, clearCart } = useCart();
    const [isClient, setIsClient] = useState(false);
    const [activeComponent, setActiveComponent] = useState('CartCalculation'); // Default to 'CartCalculation'
    const [startStatusCheck, setStartStatusCheck] = useState<boolean>(false);
+   const { status } = useSession()
 
 
    useEffect(() => {
@@ -24,7 +26,6 @@ export const CheckoutPageContent = () => {
      return null;
    }
  
-
    const handleIncrease = (id: string) => {
      updateCartItemQuantity(id, 1);
    };
@@ -39,7 +40,8 @@ export const CheckoutPageContent = () => {
        }
      }
    };
- 
+  
+
    const calculateDiscountedPrice = (price: number, discount: string) => {
      const discountPercentage = parseFloat(discount) / 100;
      return price - (price * discountPercentage);
@@ -52,14 +54,26 @@ export const CheckoutPageContent = () => {
      return acc + discountedPrice * item.quantity;
    }, 0);
  
-   const TotalSavings = cart.reduce((acc, item) => {
+   let TotalSavings = cart.reduce((acc, item) => {
      const discountAmount = item.price - calculateDiscountedPrice(item.price, item.discount);
      return acc + discountAmount * item.quantity;
    }, 0);
    
-   const transportationCharge = 70;
-   const billTotal = TotalAfterDiscount ;
-   const billTotalWithCash = TotalAfterDiscount + transportationCharge;
+   let transportationCharge = 70;
+   let billTotal = TotalAfterDiscount ;
+   if (status === 'authenticated') {
+      const additionalDiscount = TotalAfterDiscount * 0.05;
+      billTotal -= additionalDiscount;
+      TotalSavings += additionalDiscount; // Add the additional discount to TotalSavings
+    }
+
+   let billTotalWithCash = TotalAfterDiscount + transportationCharge;
+    
+    console.log("Total", Total);
+   console.log("TotalAfterDiscount", TotalAfterDiscount);
+   console.log("TotalSavings", TotalSavings);
+
+
    return(
       <section className="w-full relative">
          {startStatusCheck &&
@@ -69,7 +83,12 @@ export const CheckoutPageContent = () => {
                <span className="absolute right-4 bottom-1"><ClipLoader loading color="#b88e2f"/></span>
             </div>
          }
-
+         <div className="w-full flex items-center justify-center my-4">
+            {status === "authenticated" ? 
+            <p> You are logged in <span className="text-green-500 font-medium">5%</span>&nbsp; additional discount is already applied.</p> :
+            <p><Link href="/login" className="text-gold">Login</Link> to get additional <span className="text-green-500 font-medium">5%</span>&nbsp;discount.</p>
+            }
+         </div>
       {activeComponent === 'CartCalculation'  && 
           <CartCalculation 
              cart={cart}

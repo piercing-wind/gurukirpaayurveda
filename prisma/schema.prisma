@@ -27,9 +27,6 @@ model User {
    image             String?
    password          String?
    role              UserRole @default(USER)
-   accounts          Account[] 
-   orders            Order[]
-   transactions      Transactions[]
 }
 
 model Account {
@@ -74,7 +71,7 @@ model ResetPasswordToken {
 
 model Order {
    order_id          String   @id @default(uuid()) @map("_id")
-   userId            String
+   userId            String?
    gateway_order_id   String   @unique
    order_status      String
    total_price       Float
@@ -86,7 +83,6 @@ model Order {
    shipping_method   String
    cart_items        Json
 
-   user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
    shipping          Shipping[]
    transactions      Transactions[]
 }
@@ -109,7 +105,7 @@ model Shipping {
 model Transactions {
    id                   String   @id @default(uuid()) @map("_id")
    order_id             String   @unique
-   userId               String
+   userId               String?
    payment_id           String   @unique
    gateway_order_id     String
    payment_status       String
@@ -123,5 +119,4 @@ model Transactions {
    updatedAt            DateTime @updatedAt
 
    order                Order    @relation(fields: [order_id], references: [order_id], onDelete: Cascade)
-   user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -13,6 +13,8 @@ export const publicRoute = [
    '/api/paypal',
    '/api/phonepe',
    'api/dump',
+   '/checkout',
+   '/myaccount'
 ]
 
 
