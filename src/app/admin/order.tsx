@@ -225,7 +225,7 @@ export const OrdersList = ({ page, pageSize, orderIdFilter }: { page : number, p
         setLoading(false);
       };
   
-      fetchData();
+      fetchData(); 
     }, [page, pageSize, orderIdFilter]);
 
 
